@@ -34,10 +34,14 @@ public class CreateFlight extends javax.swing.JFrame {
         
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         
-        FillCountries();
+        
+        CrudOperations.FillCmbs("SELECT AircraftName FROM Aircraft_tbl", cmbAircraft);
+        CrudOperations.FillCmbs("SELECT CountryName FROM Country_tbl", cmbDepCountry);
+        CrudOperations.FillCmbs("SELECT CountryName FROM Country_tbl", cmbDestCountry);
+        CrudOperations.FillCmbs("SELECT IDCardNumber FROM Pilot_tbl", cmbPilots);
+        
         FillDepCities();
         FillDepAirports();
-        FillAircrafts();
         
         cmbYears.addItem(Integer.toString(year));
         cmbYears.addItem(Integer.toString(year2));
@@ -57,38 +61,27 @@ public class CreateFlight extends javax.swing.JFrame {
         cl = new GregorianCalendar(yr, month, day);
         fdt = df.format(cl.getTime());
         
-        System.out.println(fdt);
-        
         String timeFrom = cmbTimeFromHrs.getSelectedItem() + ":" + cmbTimeFromMins.getSelectedItem();
         String timeTo = cmbTimeToHrs.getSelectedItem() + ":" + cmbTimeToMins.getSelectedItem();
         
-        System.out.println(timeFrom);
-        System.out.println(timeTo);
-        
-        String aircraftQuery = "(SELECT AircraftId FROM Aircraft_tbl WHERE AircraftName = '" + cmbAircraft.getSelectedItem() +  "')";
-        
-        
-        try{
-            String query = "INSERT INTO Flights_tbl(FlightId, FlightNo, NoOfCrew, FlightDate, TimeFrom, "
+        CrudOperations.CreateRecord("INSERT INTO Flights_tbl(FlightId, FlightNo, NoOfCrew, FlightDate, TimeFrom, "
                     + "TimeTo, Duration, AircraftId, AirportDep, AirportDest, Price) "
                     + "VALUES (NULL," + "'" + txtFlightNumber.getText() + "'" + "," + "'" + txtNoOfCrew.getText() + "'" + "," + "'" + fdt + "'" +  "," + "'" + timeFrom + "'" + "," 
                     + "'" + timeTo + "'" + "," + "'" + txtDuration.getText() + "'" + "," 
                     + "(SELECT AircraftId FROM Aircraft_tbl WHERE AircraftName = '" + cmbAircraft.getSelectedItem() +  "')" + "," 
                     + "(SELECT AirportId FROM Airport_tbl WHERE AirportName = '" + cmbDepAirport.getSelectedItem() +  "')" + "," 
                     + "(SELECT AirportId FROM Airport_tbl WHERE AirportName = '" + cmbDestAirport.getSelectedItem() +  "')" + "," 
-                    + "'" + txtPrice.getText() + "'" + ")";
-            
-            String querytest = "INSERT INTO Flights_tbl('FlightId', 'FlightNo', 'NoOfCrew') VALUES ('2', 'aa7', '14')";
-            Statement st = conn.createStatement();
-            st.executeUpdate(query);
-            
-            JOptionPane.showMessageDialog(null, "Flight Created Successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
-            this.dispose();
-            new Home().setVisible(true);
-        }
-        catch (SQLException ex) {
-            System.out.println("ERROR: " + ex);
-        }
+                    + "'" + txtPrice.getText() + "'" + ")");
+        
+        
+        JOptionPane.showMessageDialog(null, "Flight Created Successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
+        this.dispose();
+        new Home().setVisible(true);
+        
+        System.out.println(txtFlightNumber.getText());
+        
+        CrudOperations.CreateRecord("INSERT INTO flightpilot_tbl(FlightId, PilotId) VALUES((SELECT FlightId FROM Flights_tbl WHERE FlightNo = '" + txtFlightNumber.getText() + "'" + "), (SELECT PilotId FROM Pilot_tbl WHERE IDCardNumber = '" + cmbPilots.getSelectedItem() + "')" + ")");
+
         
     }
     
@@ -102,141 +95,22 @@ public class CreateFlight extends javax.swing.JFrame {
         }
     }
     
-    public void FillAircrafts(){
-        DbConnection.conn();
-        Connection conn = DbConnection.conn;
-        try{
-            Statement st = conn.createStatement();
-            
-            String query = "SELECT AircraftName FROM Aircraft_tbl";
-            ResultSet rs = st.executeQuery(query);
-
-            cmbAircraft.removeAllItems();
-            
-            while(rs.next()){
-                System.out.println(rs.getString(1));
-                cmbAircraft.addItem(rs.getString(1));
-            }
-        }
-        catch (SQLException ex) {
-            System.out.println("ERROR: " + ex);
-        }
-
-    }
     
-    public void FillCountries(){
-        DbConnection.conn();
-        Connection conn = DbConnection.conn;
-        try{
-            Statement st = conn.createStatement();
-            
-            String Countryquery = "SELECT CountryName FROM Country_tbl";
-            ResultSet rsCountry = st.executeQuery(Countryquery);
-            
-            cmbDepCountry.removeAllItems();
-            cmbDestCountry.removeAllItems();
-            
-            while(rsCountry.next()){
-                System.out.println(rsCountry.getString(1));
-                cmbDepCountry.addItem(rsCountry.getString(1));
-                cmbDestCountry.addItem(rsCountry.getString(1));
-            }
-        }
-        catch (SQLException ex) {
-            System.out.println("ERROR: " + ex);
-        }
+    public void FillDepAirports(){
+        CrudOperations.FillCmbs("SELECT AirportName FROM Airport_tbl WHERE CityId IN (SELECT CityId FROM city_tbl WHERE CityName = '" + cmbDepCity.getSelectedItem() + "')", cmbDepAirport);
     }
     
     public void FillDepCities(){
-        DbConnection.conn();
-        Connection conn = DbConnection.conn;
-        try{
-            Statement st = conn.createStatement();
-            String Cityquery = "SELECT CityName FROM City_tbl WHERE CountryId IN (SELECT CountryId FROM country_tbl WHERE CountryName = '" + cmbDepCountry.getSelectedItem() +  "')";
-
-            ResultSet rsCity = st.executeQuery(Cityquery);
-            cmbDepCity.removeAllItems();
-            
-            while(rsCity.next()){
-                System.out.println(rsCity.getString(1));
-                cmbDepCity.addItem(rsCity.getString(1));
-            }
-        }
-        catch (SQLException ex) {
-            System.out.println("ERROR: " + ex);
-        }
+        CrudOperations.FillCmbs("SELECT CityName FROM City_tbl WHERE CountryId IN (SELECT CountryId FROM country_tbl WHERE CountryName = '" + cmbDepCountry.getSelectedItem() +  "')", cmbDepCity);
     }
     
-    //Fill Destination cities
     public void FillDestCities(){
-        DbConnection.conn();
-        Connection conn = DbConnection.conn;
-        try{
-            Statement st = conn.createStatement();
-            String Cityquery = "SELECT CityName FROM City_tbl WHERE CountryId IN (SELECT CountryId FROM country_tbl WHERE CountryName = '" + cmbDestCountry.getSelectedItem() +  "')";
-
-            ResultSet rsCity = st.executeQuery(Cityquery);
-            cmbDestCity.removeAllItems();
-
-            while(rsCity.next()){
-                System.out.println(rsCity.getString(1));
-                cmbDestCity.addItem(rsCity.getString(1));
-            }
-        }
-        catch (SQLException ex) {
-            System.out.println("ERROR: " + ex);
-        }
+        CrudOperations.FillCmbs("SELECT CityName FROM City_tbl WHERE CountryId IN (SELECT CountryId FROM country_tbl WHERE CountryName = '" + cmbDestCountry.getSelectedItem() +  "')", cmbDestCity);
     }
     
-    
-    //Fill Departure Airport combo box
-    public void FillDepAirports(){
-        DbConnection.conn();
-        Connection conn = DbConnection.conn;
-        try{
-            Statement st = conn.createStatement();    
-            String Airportquery = "SELECT AirportName FROM Airport_tbl WHERE CityId IN (SELECT CityId FROM city_tbl WHERE CityName = '" + cmbDepCity.getSelectedItem() + "')";
-            
-            ResultSet rsAirport = st.executeQuery(Airportquery);
-            cmbDepAirport.removeAllItems();
-
-            while(rsAirport.next()){
-                System.out.println(rsAirport.getString(1));
-                cmbDepAirport.addItem(rsAirport.getString(1));
-            }
-        }
-        catch (SQLException ex) {
-            System.out.println("ERROR: " + ex);
-            //JOptionPane.showMessageDialog(null, "ERROR:");
-        }
-    }
-    
-    //Fill destination Airports
     public void FillDestAirports(){
-        DbConnection.conn();
-        Connection conn = DbConnection.conn;
-        try{
-            Statement st = conn.createStatement();
-            String Airportquery = "SELECT AirportName FROM Airport_tbl WHERE CityId IN (SELECT CityId FROM city_tbl WHERE CityName = '" + cmbDestCity.getSelectedItem() + "')";
-            
-            ResultSet rsAirport = st.executeQuery(Airportquery);
-            cmbDestAirport.removeAllItems();
-            
-            while(rsAirport.next()){
-                System.out.println(rsAirport.getString(1));
-                cmbDestAirport.addItem(rsAirport.getString(1));
-            }
-
-        }
-        catch (SQLException ex) {
-            System.out.println("ERROR: " + ex);
-            //JOptionPane.showMessageDialog(null, "ERROR:");
-        }
+        CrudOperations.FillCmbs("SELECT AirportName FROM Airport_tbl WHERE CityId IN (SELECT CityId FROM city_tbl WHERE CityName = '" + cmbDestCity.getSelectedItem() + "')", cmbDestAirport);
     }
-    
-    
-    
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -279,6 +153,8 @@ public class CreateFlight extends javax.swing.JFrame {
         cmbDestAirport = new javax.swing.JComboBox<>();
         lblPrice = new javax.swing.JLabel();
         txtPrice = new javax.swing.JTextField();
+        lblPilot = new javax.swing.JLabel();
+        cmbPilots = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -380,6 +256,8 @@ public class CreateFlight extends javax.swing.JFrame {
             }
         });
 
+        lblPilot.setText("Pilot");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -406,22 +284,21 @@ public class CreateFlight extends javax.swing.JFrame {
                                 .addComponent(cmbDestAirport, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(cmbAircraft, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtFlightNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtNoOfCrew, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(cmbDepCountry, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(18, 18, 18)
                                         .addComponent(cmbDepCity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(18, 18, 18)
-                                        .addComponent(cmbDepAirport, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(txtNoOfCrew, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(cmbAircraft, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(txtFlightNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGap(94, 94, 94)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(lblPrice)
-                                            .addComponent(lblTimeTo)
-                                            .addComponent(lblTimeFrom))))
+                                        .addComponent(cmbDepAirport, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(74, 74, 74)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lblPilot)
+                                    .addComponent(lblPrice)
+                                    .addComponent(lblTimeTo)
+                                    .addComponent(lblTimeFrom))
                                 .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
@@ -432,7 +309,8 @@ public class CreateFlight extends javax.swing.JFrame {
                                         .addComponent(cmbTimeToHrs, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(18, 18, 18)
                                         .addComponent(cmbTimeToMins, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(txtPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(txtPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(cmbPilots, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addComponent(txtDuration, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -487,7 +365,9 @@ public class CreateFlight extends javax.swing.JFrame {
                             .addComponent(lblDep)
                             .addComponent(cmbDepCountry, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(cmbDepCity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cmbDepAirport, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(cmbDepAirport, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblPilot)
+                            .addComponent(cmbPilots, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(lblDest)
@@ -554,6 +434,7 @@ public class CreateFlight extends javax.swing.JFrame {
     private void cmbDestCityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbDestCityActionPerformed
         // TODO add your handling code here:
         FillDestAirports();
+
     }//GEN-LAST:event_cmbDestCityActionPerformed
 
     private void cmbMonthsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbMonthsActionPerformed
@@ -611,6 +492,7 @@ public class CreateFlight extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> cmbDestCity;
     private javax.swing.JComboBox<String> cmbDestCountry;
     private javax.swing.JComboBox<String> cmbMonths;
+    private javax.swing.JComboBox<String> cmbPilots;
     private javax.swing.JComboBox<String> cmbTimeFromHrs;
     private javax.swing.JComboBox<String> cmbTimeFromMins;
     private javax.swing.JComboBox<String> cmbTimeToHrs;
@@ -626,6 +508,7 @@ public class CreateFlight extends javax.swing.JFrame {
     private javax.swing.JLabel lblFlightNumber;
     private javax.swing.JLabel lblMonth;
     private javax.swing.JLabel lblNoOfCrew;
+    private javax.swing.JLabel lblPilot;
     private javax.swing.JLabel lblPrice;
     private javax.swing.JLabel lblTimeFrom;
     private javax.swing.JLabel lblTimeTo;

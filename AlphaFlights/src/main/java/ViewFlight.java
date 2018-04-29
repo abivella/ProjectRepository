@@ -24,58 +24,24 @@ public class ViewFlight extends javax.swing.JFrame {
     }
     
     public void FillFlights(){
-        DbConnection.conn();
-        Connection conn = DbConnection.conn;
-        try{
-            Statement st = conn.createStatement();
-            
-            String query = "SELECT FlightNo FROM flights_tbl";
-            ResultSet rs = st.executeQuery(query);
-            
-            while(rs.next()){
-                cmbFlights.addItem(rs.getString(1));
-            }
-        }
-        catch (SQLException ex) {
-            System.out.println("ERROR: " + ex);
-        }
+        CrudOperations.FillCmbs("SELECT FlightNo FROM flights_tbl", cmbFlights);
 
     }
     
-    public void queryFill(String qry, JLabel lbl){
-        DbConnection.conn();
-        Connection conn = DbConnection.conn;
-        try{
-            Statement st = conn.createStatement();
-            
-            String query = qry;
-            ResultSet rs = st.executeQuery(query);
-            
-            lbl.setText("");
-            while(rs.next()){
-                lbl.setText(rs.getString(1));
-            }
-        }
-        catch (SQLException ex) {
-            System.out.println("ERROR: " + ex);
-        }
-    }
-    
     public void GetDetails(){
-        queryFill("SELECT NoOfCrew FROM flights_tbl WHERE FlightNo = '" + cmbFlights.getSelectedItem() + "'" , lblCrew);
-        queryFill("SELECT AircraftName FROM Aircraft_tbl WHERE AircraftId IN (SELECT AircraftId FROM Flights_tbl)", lblAircraft);
-        queryFill("SELECT AirportName FROM Airport_tbl WHERE AirportId IN (SELECT AirportDep FROM Flights_tbl WHERE FlightNo = '" + cmbFlights.getSelectedItem() + "')", lblDepAirport);
-        queryFill("SELECT CityName from city_tbl WHERE CityId IN (SELECT CityId FROM Airport_tbl WHERE AirportName = '" + lblDepAirport.getText() + "')", lblDepCity);
-        queryFill("SELECT CityName from city_tbl WHERE CityId IN (SELECT CityId FROM Airport_tbl WHERE AirportName = '" + lblDepAirport.getText() + "')", lblDepCity);
-        queryFill("SELECT CountryName FROM country_tbl WHERE CountryId IN (SELECT CountryId FROM City_tbl WHERE CityName = '" + lblDepCity.getText() + "')", lblDepCountry);
-        queryFill("SELECT AirportName FROM Airport_tbl WHERE AirportId IN (SELECT AirportDest FROM Flights_tbl WHERE FlightNo = '" + cmbFlights.getSelectedItem() + "')", lblDestAirport);
-        queryFill("SELECT CityName from city_tbl WHERE CityId IN (SELECT CityId FROM Airport_tbl WHERE AirportName = '" + lblDestAirport.getText() + "')", lblDestCity);
-        queryFill("SELECT CountryName FROM country_tbl WHERE CountryId IN (SELECT CountryId FROM City_tbl WHERE CityName = '" + lblDestCity.getText() + "')", lblDestCountry);
-        queryFill("SELECT Duration FROM Flights_tbl WHERE FlightNo = '" + cmbFlights.getSelectedItem() + "'", lblDuration);
-        queryFill("SELECT TimeFrom FROM Flights_tbl WHERE FlightNo = '" + cmbFlights.getSelectedItem() + "'", lblTimeFrom);
-        queryFill("SELECT TimeTo FROM Flights_tbl WHERE FlightNo = '" + cmbFlights.getSelectedItem() + "'", lblTimeTo);
-        queryFill("SELECT FlightDate FROM Flights_tbl WHERE FlightNo = '" + cmbFlights.getSelectedItem() + "'", lblDate);
-        queryFill("SELECT Price FROM Flights_tbl WHERE FlightNo = '" + cmbFlights.getSelectedItem() + "'", lblPrice);
+        CrudOperations.ViewDetailsLbl("SELECT NoOfCrew FROM flights_tbl WHERE FlightNo = '" + cmbFlights.getSelectedItem() + "'" , lblCrew);
+        CrudOperations.ViewDetailsLbl("SELECT AircraftName FROM Aircraft_tbl WHERE AircraftId IN (SELECT AircraftId FROM Flights_tbl WHERE FlightNo = '" + cmbFlights.getSelectedItem() + "')", lblAircraft);
+        CrudOperations.ViewDetailsLbl("SELECT AirportName FROM Airport_tbl WHERE AirportId IN (SELECT AirportDep FROM Flights_tbl WHERE FlightNo = '" + cmbFlights.getSelectedItem() + "')", lblDepAirport);
+        CrudOperations.ViewDetailsLbl("SELECT CityName from city_tbl WHERE CityId IN (SELECT CityId FROM Airport_tbl WHERE AirportName = '" + lblDepAirport.getText() + "')", lblDepCity);   
+        CrudOperations.ViewDetailsLbl("SELECT CountryName FROM country_tbl WHERE CountryId IN (SELECT CountryId FROM City_tbl WHERE CityName = '" + lblDepCity.getText() + "')", lblDepCountry);
+        CrudOperations.ViewDetailsLbl("SELECT AirportName FROM Airport_tbl WHERE AirportId IN (SELECT AirportDest FROM Flights_tbl WHERE FlightNo = '" + cmbFlights.getSelectedItem() + "')", lblDestAirport);
+        CrudOperations.ViewDetailsLbl("SELECT CityName from city_tbl WHERE CityId IN (SELECT CityId FROM Airport_tbl WHERE AirportName = '" + lblDestAirport.getText() + "')", lblDestCity);
+        CrudOperations.ViewDetailsLbl("SELECT CountryName FROM country_tbl WHERE CountryId IN (SELECT CountryId FROM City_tbl WHERE CityName = '" + lblDestCity.getText() + "')", lblDestCountry);
+        CrudOperations.ViewDetailsLbl("SELECT Duration FROM Flights_tbl WHERE FlightNo = '" + cmbFlights.getSelectedItem() + "'", lblDuration);
+        CrudOperations.ViewDetailsLbl("SELECT TimeFrom FROM Flights_tbl WHERE FlightNo = '" + cmbFlights.getSelectedItem() + "'", lblTimeFrom);
+        CrudOperations.ViewDetailsLbl("SELECT TimeTo FROM Flights_tbl WHERE FlightNo = '" + cmbFlights.getSelectedItem() + "'", lblTimeTo);
+        CrudOperations.ViewDetailsLbl("SELECT FlightDate FROM Flights_tbl WHERE FlightNo = '" + cmbFlights.getSelectedItem() + "'", lblDate);
+        CrudOperations.ViewDetailsLbl("SELECT Price FROM Flights_tbl WHERE FlightNo = '" + cmbFlights.getSelectedItem() + "'", lblPrice);
     }
 
     /**

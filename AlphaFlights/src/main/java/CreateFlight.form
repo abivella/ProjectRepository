@@ -47,26 +47,23 @@
                           </Group>
                           <Group type="102" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Group type="102" attributes="0">
+                                  <Component id="cmbAircraft" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="txtFlightNumber" min="-2" pref="100" max="-2" attributes="0"/>
+                                  <Component id="txtNoOfCrew" alignment="0" min="-2" pref="40" max="-2" attributes="0"/>
+                                  <Group type="102" alignment="0" attributes="0">
                                       <Component id="cmbDepCountry" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace type="separate" max="-2" attributes="0"/>
                                       <Component id="cmbDepCity" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace type="separate" max="-2" attributes="0"/>
                                       <Component id="cmbDepAirport" min="-2" max="-2" attributes="0"/>
                                   </Group>
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="txtNoOfCrew" alignment="0" min="-2" pref="40" max="-2" attributes="0"/>
-                                          <Component id="cmbAircraft" alignment="0" min="-2" max="-2" attributes="0"/>
-                                          <Component id="txtFlightNumber" min="-2" pref="100" max="-2" attributes="0"/>
-                                      </Group>
-                                      <EmptySpace min="-2" pref="94" max="-2" attributes="0"/>
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="lblPrice" min="-2" max="-2" attributes="0"/>
-                                          <Component id="lblTimeTo" min="-2" max="-2" attributes="0"/>
-                                          <Component id="lblTimeFrom" min="-2" max="-2" attributes="0"/>
-                                      </Group>
-                                  </Group>
+                              </Group>
+                              <EmptySpace min="-2" pref="74" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="lblPilot" min="-2" max="-2" attributes="0"/>
+                                  <Component id="lblPrice" min="-2" max="-2" attributes="0"/>
+                                  <Component id="lblTimeTo" min="-2" max="-2" attributes="0"/>
+                                  <Component id="lblTimeFrom" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
@@ -81,6 +78,7 @@
                                       <Component id="cmbTimeToMins" min="-2" max="-2" attributes="0"/>
                                   </Group>
                                   <Component id="txtPrice" alignment="0" min="-2" pref="100" max="-2" attributes="0"/>
+                                  <Component id="cmbPilots" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                           <Component id="txtDuration" alignment="0" min="-2" pref="100" max="-2" attributes="0"/>
@@ -154,6 +152,8 @@
                           <Component id="cmbDepCountry" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="cmbDepCity" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="cmbDepAirport" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="lblPilot" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="cmbPilots" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
@@ -530,6 +530,21 @@
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtPriceActionPerformed"/>
       </Events>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblPilot">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Pilot"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JComboBox" name="cmbPilots">
+      <Properties>
+        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+          <StringArray count="0"/>
+        </Property>
+      </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+      </AuxValues>
     </Component>
   </SubComponents>
 </Form>
