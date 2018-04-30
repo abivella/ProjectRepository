@@ -61,9 +61,6 @@ public class CrudOperations {
             
             String query = qry;
             rs = st.executeQuery(query);
-            
-            
-            //conn.close();
         }
         catch (SQLException ex) {
             System.out.println("ERROR: " + ex);  

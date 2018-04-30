@@ -30,6 +30,7 @@ public class Home extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jMenu3 = new javax.swing.JMenu();
         lblTitle = new javax.swing.JLabel();
         lblLogo = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
@@ -43,18 +44,20 @@ public class Home extends javax.swing.JFrame {
         DelFlightMenu = new javax.swing.JMenuItem();
         PilotMenu = new javax.swing.JMenu();
         CreatePilotMenu = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
+        ViewPilotMenu = new javax.swing.JMenuItem();
         EditPilotMenu = new javax.swing.JMenuItem();
         DelPilotMenu = new javax.swing.JMenuItem();
         AircraftsMenu = new javax.swing.JMenu();
         CreateAircraftMenu = new javax.swing.JMenuItem();
-        jMenuItem3 = new javax.swing.JMenuItem();
+        ViewAircraftMenu = new javax.swing.JMenuItem();
         EditAircraftMenu = new javax.swing.JMenuItem();
         DelAircraftMenu = new javax.swing.JMenuItem();
         AirportMenu = new javax.swing.JMenu();
         CreateAirportMenu = new javax.swing.JMenuItem();
         EditAirportMenu = new javax.swing.JMenuItem();
         DelAirportMenu1 = new javax.swing.JMenuItem();
+
+        jMenu3.setText("jMenu3");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -117,8 +120,8 @@ public class Home extends javax.swing.JFrame {
         });
         PilotMenu.add(CreatePilotMenu);
 
-        jMenuItem2.setText("View Pilot");
-        PilotMenu.add(jMenuItem2);
+        ViewPilotMenu.setText("View Pilot");
+        PilotMenu.add(ViewPilotMenu);
 
         EditPilotMenu.setText("Edit Pilot");
         EditPilotMenu.addActionListener(new java.awt.event.ActionListener() {
@@ -148,8 +151,8 @@ public class Home extends javax.swing.JFrame {
         });
         AircraftsMenu.add(CreateAircraftMenu);
 
-        jMenuItem3.setText("View Aircraft");
-        AircraftsMenu.add(jMenuItem3);
+        ViewAircraftMenu.setText("View Aircraft");
+        AircraftsMenu.add(ViewAircraftMenu);
 
         EditAircraftMenu.setText("Edit Aircraft");
         EditAircraftMenu.addActionListener(new java.awt.event.ActionListener() {
@@ -172,6 +175,11 @@ public class Home extends javax.swing.JFrame {
         AirportMenu.setText("Airports");
 
         CreateAirportMenu.setText("Create Airport");
+        CreateAirportMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CreateAirportMenuActionPerformed(evt);
+            }
+        });
         AirportMenu.add(CreateAirportMenu);
 
         EditAirportMenu.setText("Edit Airport");
@@ -183,6 +191,11 @@ public class Home extends javax.swing.JFrame {
         AirportMenu.add(EditAirportMenu);
 
         DelAirportMenu1.setText("Delete Airport");
+        DelAirportMenu1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                DelAirportMenu1ActionPerformed(evt);
+            }
+        });
         AirportMenu.add(DelAirportMenu1);
 
         jMenu2.add(AirportMenu);
@@ -272,6 +285,16 @@ public class Home extends javax.swing.JFrame {
         new DeleteAircrafts().setVisible(true);
     }//GEN-LAST:event_DelAircraftMenuActionPerformed
 
+    private void CreateAirportMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CreateAirportMenuActionPerformed
+        // TODO add your handling code here:
+       new CreateAirport().setVisible(true);
+    }//GEN-LAST:event_CreateAirportMenuActionPerformed
+
+    private void DelAirportMenu1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DelAirportMenu1ActionPerformed
+        // TODO add your handling code here:
+        new DeleteAirports().setVisible(true);
+    }//GEN-LAST:event_DelAirportMenu1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -324,13 +347,14 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JMenuItem EditPilotMenu;
     private javax.swing.JMenu FlightMenu;
     private javax.swing.JMenu PilotMenu;
+    private javax.swing.JMenuItem ViewAircraftMenu;
     private javax.swing.JMenuItem ViewFlightMenu;
+    private javax.swing.JMenuItem ViewPilotMenu;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JLabel lblLogo;
     private javax.swing.JLabel lblTitle;
     // End of variables declaration//GEN-END:variables
