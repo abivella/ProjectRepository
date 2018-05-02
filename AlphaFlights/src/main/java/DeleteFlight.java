@@ -84,6 +84,7 @@ public class DeleteFlight extends javax.swing.JFrame {
         Object[] options = {"Delete", "Cancel"};
         int option = JOptionPane.showOptionDialog(null, "Are you sure you want to delete the record?", "Please confirm",JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
         if(option == JOptionPane.YES_OPTION){
+            CrudOperations.DeleteRecord("DELETE FROM flightpilot_tbl WHERE FlightId = (SELECT FlightId FROM flights_tbl WHERE FlightNo = '" + cmbFlightNumber.getSelectedItem() + "')");
             CrudOperations.DeleteRecord("DELETE FROM flights_tbl WHERE FlightNo = '" + cmbFlightNumber.getSelectedItem() + "'");
             
             JOptionPane.showMessageDialog(null, "Flight Deleted Successfully", "Success", JOptionPane.INFORMATION_MESSAGE);

@@ -12,6 +12,94 @@ import java.sql.*;
  * @author Abigail
  */
 public class CrudOperations {
+
+    public static boolean Validation(JTextField txt, String typeOfVal){
+        Object[] options = {"Ok" , "Cancel"};
+        
+        boolean contains = false;
+        String textBox = txt.getText();
+        
+        if(typeOfVal == "NoStringEmptyY"){
+            for(char c : textBox.toCharArray()){
+                if(Character.isAlphabetic(c)){
+                    contains = true;
+                }
+            }
+            if(contains == true){
+                JOptionPane.showOptionDialog(null, "Field should not contain letters", "Error", JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE, null, options, null);
+            }
+        }       
+        else if(typeOfVal == "NoDigit"){
+            for(char c : textBox.toCharArray()){
+                if(Character.isDigit(c)){
+                    contains = true;
+                }
+            }
+            if(txt.getText().equals("")){
+                JOptionPane.showOptionDialog(null, "Field should not be empty", "Error", JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE, null, options, null);
+            }
+            else if(contains == true){
+                JOptionPane.showOptionDialog(null, "Field should not contain digits", "Error", JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE, null, options, null);
+            }
+        }
+        else if(typeOfVal == "NoString"){
+            for(char c : textBox.toCharArray()){
+                if(Character.isAlphabetic(c)){
+                    contains = true;
+                }
+            }
+            if(txt.getText().equals("")){
+                JOptionPane.showOptionDialog(null, "Field should not be empty", "Error", JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE, null, options, null);
+            }
+            else if(contains == true){
+                JOptionPane.showOptionDialog(null, "Field should not contain letters", "Error", JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE, null, options, null);
+            }
+        }
+        else if(typeOfVal == "DigitStringY"){
+            if(txt.getText().equals("")){
+                JOptionPane.showOptionDialog(null, "Field should not be empty", "Error", JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE, null, options, null);
+                contains = true;
+            }
+            else if(contains == true){
+                JOptionPane.showOptionDialog(null, "Field should not contain letters", "Error", JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE, null, options, null);
+            }
+        }
+        
+        
+        return contains;
+    }
+    
+    public static boolean CheckRow(String qry, String delQry){
+        DbConnection.conn();
+        Connection conn = DbConnection.conn;
+        
+        boolean found = false;
+        
+        try{
+            Statement st = conn.createStatement();
+            String query = qry;
+            ResultSet rs = st.executeQuery(query);
+            int count = 0;
+            
+            if(rs.next()){
+                count = rs.getInt(1);
+                System.out.println(count);
+            }
+            
+            if(count > 0){
+                found = true;
+            }
+            else {
+                found = false;
+                CrudOperations.DeleteRecord(delQry);
+            }
+            
+        }
+        catch (SQLException ex) {
+            System.out.println("ERROR: " + ex);
+        }
+        return found;
+    }
     
     public static void CreateRecord(String qry){
         DbConnection.conn();

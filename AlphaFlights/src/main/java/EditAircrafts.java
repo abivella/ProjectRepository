@@ -130,14 +130,26 @@ public class EditAircrafts extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        CrudOperations.EditDetails("UPDATE Aircraft_tbl SET AircraftName = '" + txtAircraftName.getText() +
-                "', AircraftCode = '" + txtAircraftCode.getText() +
-                "', NoOfAvSeats = '" + txtNoOfAvSeats.getText() +
-                "' WHERE AircraftName = '" + cmbAircrafts.getSelectedItem() + "'");
         
-        JOptionPane.showMessageDialog(null, "Aircraft Details Updated Successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
-        this.dispose();
-        new Home().setVisible(true);
+        CrudOperations.Validation(txtAircraftCode, "DigitStringY");
+        boolean Ccontains = CrudOperations.Validation(txtAircraftCode, "DigitStringY");
+        
+        CrudOperations.Validation(txtAircraftName, "NoDigit");
+        boolean Ncontains = CrudOperations.Validation(txtAircraftName, "NoDigit");
+        
+        CrudOperations.Validation(txtNoOfAvSeats, "NoString");
+        boolean Scontains = CrudOperations.Validation(txtNoOfAvSeats, "NoString");
+        
+        if(Ccontains == false && Ncontains == false && Scontains == false){
+            CrudOperations.EditDetails("UPDATE Aircraft_tbl SET AircraftName = '" + txtAircraftName.getText() +
+                    "', AircraftCode = '" + txtAircraftCode.getText() +
+                    "', NoOfAvSeats = '" + txtNoOfAvSeats.getText() +
+                    "' WHERE AircraftName = '" + cmbAircrafts.getSelectedItem() + "'");
+
+            JOptionPane.showMessageDialog(null, "Aircraft Details Updated Successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
+            this.dispose();
+            new Home().setVisible(true);
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**

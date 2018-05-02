@@ -81,13 +81,22 @@ public class DeletePilots extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         Object[] options = {"Delete", "Cancel"};
-        int option = JOptionPane.showOptionDialog(null, "Are you sure you want to delete the record?", "Please confirm",JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
-        if(option == JOptionPane.YES_OPTION){
-            CrudOperations.DeleteRecord("DELETE FROM Pilot_tbl WHERE IDCardNumber= '" + cmbPilots.getSelectedItem() + "'");
-            
-            JOptionPane.showMessageDialog(null, "Pilot Deleted Successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
-            this.dispose();
-            new Home().setVisible(true);
+        Object[] options2 = {"Ok"};
+        boolean found = CrudOperations.CheckRow("SELECT PilotId FROM flightpilot_tbl WHERE PilotId = (SELECT PilotId FROM Pilot_tbl WHERE IDCardNumber = '" + cmbPilots.getSelectedItem()+ "')", "DELETE FROM Pilot_tbl WHERE IDCardNumber= '" + cmbPilots.getSelectedItem() + "'");
+        
+        if (found == true){
+            CrudOperations.CheckRow("SELECT PilotId FROM flightpilot_tbl WHERE (SELECT PilotId FROM Pilot_tbl WHERE IDCardNumber = '" + cmbPilots.getSelectedItem()+ ")", "DELETE FROM Pilot_tbl WHERE IDCardNumber= '" + cmbPilots.getSelectedItem() + "'");
+            JOptionPane.showOptionDialog(null, "Pilot cannot be deleted! Please delete all flights assigned to pilot!", "Please confirm",JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,null,options2,options2[0]);
+        }
+        else if(found == false){
+            int option = JOptionPane.showOptionDialog(null, "Are you sure you want to delete the record?", "Please confirm",JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
+            if(option == JOptionPane.YES_OPTION){
+                CrudOperations.CheckRow("SELECT PilotId FROM flightpilot_tbl WHERE PilotId = (SELECT PilotId FROM Pilot_tbl WHERE IDCardNumber = '" + cmbPilots.getSelectedItem()+ "')", "DELETE FROM Pilot_tbl WHERE IDCardNumber= '" + cmbPilots.getSelectedItem() + "'");
+                
+                JOptionPane.showMessageDialog(null, "Pilot Deleted Successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
+                this.dispose();
+                new Home().setVisible(true);
+            }
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 

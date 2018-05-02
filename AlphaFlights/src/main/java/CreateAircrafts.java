@@ -100,13 +100,25 @@ public class CreateAircrafts extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        CrudOperations.CreateRecord("INSERT INTO Aircraft_tbl(AircraftId, AircraftCode, AircraftName, NoOfAvSeats) VALUES(NULL, " +
+        
+        CrudOperations.Validation(txtAircraftCode, "DigitStringY");
+        boolean Ccontains = CrudOperations.Validation(txtAircraftCode, "DigitStringY");
+        
+        CrudOperations.Validation(txtAircraftName, "NoDigit");
+        boolean Ncontains = CrudOperations.Validation(txtAircraftName, "NoDigit");
+        
+        CrudOperations.Validation(txtNoOfAvSeats, "NoString");
+        boolean Scontains = CrudOperations.Validation(txtNoOfAvSeats, "NoString");
+        
+        if(Ccontains == false && Ncontains == false && Scontains == false){
+            CrudOperations.CreateRecord("INSERT INTO Aircraft_tbl(AircraftId, AircraftCode, AircraftName, NoOfAvSeats) VALUES(NULL, " +
                 "'" + txtAircraftCode.getText() + "', " +
                         "'" + txtAircraftName.getText() + "', " + "'" + txtNoOfAvSeats.getText() + "')");
         
-        JOptionPane.showMessageDialog(null, "Aircraft Created Successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
-        this.dispose();
-        new Home().setVisible(true);
+            JOptionPane.showMessageDialog(null, "Aircraft Created Successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
+            this.dispose();
+            new Home().setVisible(true);
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**

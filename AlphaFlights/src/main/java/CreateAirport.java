@@ -26,7 +26,6 @@ public class CreateAirport extends javax.swing.JFrame {
         CrudOperations.FillCmbs("SELECT CityName FROM City_tbl WHERE CountryId IN (SELECT CountryId FROM country_tbl WHERE CountryName = '" + cmbCountry.getSelectedItem() +  "')", cmbCity);
 
     }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -50,7 +49,7 @@ public class CreateAirport extends javax.swing.JFrame {
         btnAddCity = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         txtCountry = new javax.swing.JTextField();
-        txtAddCountry = new javax.swing.JButton();
+        btnAddCountry = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -88,12 +87,12 @@ public class CreateAirport extends javax.swing.JFrame {
 
         jLabel3.setText("Country");
 
-        txtAddCountry.setText("Add Country");
-        txtAddCountry.setMaximumSize(new java.awt.Dimension(100, 25));
-        txtAddCountry.setMinimumSize(new java.awt.Dimension(100, 25));
-        txtAddCountry.addActionListener(new java.awt.event.ActionListener() {
+        btnAddCountry.setText("Add Country");
+        btnAddCountry.setMaximumSize(new java.awt.Dimension(100, 25));
+        btnAddCountry.setMinimumSize(new java.awt.Dimension(100, 25));
+        btnAddCountry.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtAddCountryActionPerformed(evt);
+                btnAddCountryActionPerformed(evt);
             }
         });
 
@@ -139,7 +138,7 @@ public class CreateAirport extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(txtCountry, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 103, Short.MAX_VALUE)
-                        .addComponent(txtAddCountry, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(btnAddCountry, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -169,7 +168,7 @@ public class CreateAirport extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(txtCountry, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtAddCountry, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnAddCountry, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(56, 56, 56))
         );
 
@@ -184,33 +183,47 @@ public class CreateAirport extends javax.swing.JFrame {
 
     private void btnAddAirportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddAirportActionPerformed
         // TODO add your handling code here:
-        CrudOperations.CreateRecord("INSERT INTO Airport_tbl (AirportId, AirportName, CityId) VALUES (NULL, '" + txtAirportName.getText() + "'," + "(SELECT CityId FROM City_tbl WHERE CityName = '" + cmbCity.getSelectedItem() + "'" + ")" + ")");
         
-        JOptionPane.showMessageDialog(null, "Airport Added Successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
+        CrudOperations.Validation(txtAirportName, "NoDigits");
+        boolean contains = CrudOperations.Validation(txtAirportName, "NoDigits");
+        
+        if(contains == false){
+           CrudOperations.CreateRecord("INSERT INTO Airport_tbl (AirportId, AirportName, CityId) VALUES (NULL, '" + txtAirportName.getText() + "'," + "(SELECT CityId FROM City_tbl WHERE CityName = '" + cmbCity.getSelectedItem() + "'" + ")" + ")");
+           JOptionPane.showMessageDialog(null, "Airport Added Successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
+        }
+        
+        
         //this.dispose();
         //new Home().setVisible(true);
     }//GEN-LAST:event_btnAddAirportActionPerformed
 
     private void btnAddCityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddCityActionPerformed
         // TODO add your handling code here:
-        CrudOperations.CreateRecord("INSERT INTO City_tbl (CityId, CityName, CountryId) VALUES (NULL, '" + txtCity.getText() + "'," + "(SELECT CountryId FROM Country_tbl WHERE CountryName = '" + cmbCountry02.getSelectedItem() + "'" + ")" + ")");
-        JOptionPane.showMessageDialog(null, "City Added Successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
+        CrudOperations.Validation(txtCity, "NoDigits");
+        boolean contains = CrudOperations.Validation(txtCity, "NoDigits");
         
+        if(contains == false){
+           CrudOperations.CreateRecord("INSERT INTO City_tbl (CityId, CityName, CountryId) VALUES (NULL, '" + txtCity.getText() + "'," + "(SELECT CountryId FROM Country_tbl WHERE CountryName = '" + cmbCountry02.getSelectedItem() + "'" + ")" + ")");
+           JOptionPane.showMessageDialog(null, "City Added Successfully", "Success", JOptionPane.INFORMATION_MESSAGE); 
+        }
+
         CrudOperations.FillCmbs("SELECT CityName FROM City_tbl WHERE CountryId IN (SELECT CountryId FROM country_tbl WHERE CountryName = '" + cmbCountry.getSelectedItem() +  "')", cmbCity);
-
-
     }//GEN-LAST:event_btnAddCityActionPerformed
 
-    private void txtAddCountryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtAddCountryActionPerformed
+    private void btnAddCountryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddCountryActionPerformed
         // TODO add your handling code here:
-        CrudOperations.CreateRecord("INSERT INTO Country_tbl (CountryId, CountryName) VALUES (NULL, '" + txtCountry.getText() + "'" + ")");
+        CrudOperations.Validation(txtCountry, "NoDigits");
+        boolean contains = CrudOperations.Validation(txtCountry, "NoDigits");
         
-        JOptionPane.showMessageDialog(null, "Country Added Successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
+        if(contains == false){
+           CrudOperations.CreateRecord("INSERT INTO Country_tbl (CountryId, CountryName) VALUES (NULL, '" + txtCountry.getText() + "'" + ")");
+           JOptionPane.showMessageDialog(null, "Country Added Successfully", "Success", JOptionPane.INFORMATION_MESSAGE); 
+        }
         
         CrudOperations.FillCmbs("SELECT CountryName FROM Country_tbl", cmbCountry);
         CrudOperations.FillCmbs("SELECT CountryName FROM Country_tbl", cmbCountry02);
         CrudOperations.FillCmbs("SELECT CityName FROM City_tbl WHERE CountryId IN (SELECT CountryId FROM country_tbl WHERE CountryName = '" + cmbCountry.getSelectedItem() +  "')", cmbCity);
-    }//GEN-LAST:event_txtAddCountryActionPerformed
+    }//GEN-LAST:event_btnAddCountryActionPerformed
 
     /**
      * @param args the command line arguments
@@ -250,6 +263,7 @@ public class CreateAirport extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddAirport;
     private javax.swing.JButton btnAddCity;
+    private javax.swing.JButton btnAddCountry;
     private javax.swing.JComboBox<String> cmbCity;
     private javax.swing.JComboBox<String> cmbCountry;
     private javax.swing.JComboBox<String> cmbCountry02;
@@ -259,7 +273,6 @@ public class CreateAirport extends javax.swing.JFrame {
     private javax.swing.JLabel lblCity;
     private javax.swing.JLabel lblCountry;
     private javax.swing.JLabel lblCountry02;
-    private javax.swing.JButton txtAddCountry;
     private javax.swing.JTextField txtAirportName;
     private javax.swing.JTextField txtCity;
     private javax.swing.JTextField txtCountry;

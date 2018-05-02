@@ -403,7 +403,19 @@ public class CreateFlight extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        insertFlight();
+        CrudOperations.Validation(txtFlightNumber, "DigitStringY");
+        boolean FlightNoContains = CrudOperations.Validation(txtFlightNumber, "DigitStringY");
+        
+        CrudOperations.Validation(txtNoOfCrew, "NoString");
+        boolean CrewNoContains = CrudOperations.Validation(txtNoOfCrew, "NoString");
+        
+        CrudOperations.Validation(txtPrice, "NoString");
+        boolean PriceContains = CrudOperations.Validation(txtPrice, "NoString");
+        
+        if(FlightNoContains == false && CrewNoContains == false && PriceContains == false){
+           insertFlight(); 
+        }
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void cmbDestAirportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbDestAirportActionPerformed

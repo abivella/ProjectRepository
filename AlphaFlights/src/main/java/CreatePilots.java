@@ -273,7 +273,22 @@ public class CreatePilots extends javax.swing.JFrame {
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         // TODO add your handling code here:
-        CreatePilot();
+        CrudOperations.Validation(txtFirstName, "NoDigit");
+        boolean NameContains = CrudOperations.Validation(txtFirstName, "NoDigit");
+        
+        CrudOperations.Validation(txtLastName, "NoDigit");
+        boolean SurnameContains = CrudOperations.Validation(txtLastName, "NoDigit");
+        
+        CrudOperations.Validation(txtContactNumber1, "NoString");
+        boolean ContNo1Contains = CrudOperations.Validation(txtContactNumber1, "NoString");
+        
+        CrudOperations.Validation(txtContactNumber2, "NoStringEmptyY");
+        boolean ContNo2Contains = CrudOperations.Validation(txtContactNumber2, "NoStringEmptyY");
+        
+        if(NameContains == false && SurnameContains == false && ContNo1Contains == false && ContNo2Contains == false){
+            CreatePilot();
+        }
+
     }//GEN-LAST:event_btnSaveActionPerformed
 
     private void cmbDaysActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbDaysActionPerformed

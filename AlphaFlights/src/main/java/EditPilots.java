@@ -256,15 +256,30 @@ public class EditPilots extends javax.swing.JFrame {
         
         cl = new GregorianCalendar(yr, month, day);
         fdt = df.format(cl.getTime());
-        CrudOperations.EditDetails("UPDATE Pilot_tbl SET PilotName = '" + txtName.getText() +
-                "', PilotSurname = '" + txtSurname.getText() +
-                "', Dob = '" + fdt +
-                "', ContactNo1 = '" + txtContactNumber1.getText() +
-                "', ContactNo2 = '" + txtContactNumber2.getText() + "' WHERE IDCardNumber = '" + cmbPilots.getSelectedItem() + "'");
         
-        JOptionPane.showMessageDialog(null, "Pilot Details Updated Successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
-        this.dispose();
-        new Home().setVisible(true);
+        CrudOperations.Validation(txtName, "NoDigit");
+        boolean NameContains = CrudOperations.Validation(txtName, "NoDigit");
+        
+        CrudOperations.Validation(txtSurname, "NoDigit");
+        boolean SurnameContains = CrudOperations.Validation(txtSurname, "NoDigit");
+        
+        CrudOperations.Validation(txtContactNumber1, "NoString");
+        boolean ContNo1Contains = CrudOperations.Validation(txtContactNumber1, "NoString");
+        
+        CrudOperations.Validation(txtContactNumber2, "NoStringEmptyY");
+        boolean ContNo2Contains = CrudOperations.Validation(txtContactNumber2, "NoStringEmptyY");
+        
+        if(NameContains == false && SurnameContains == false && ContNo1Contains == false && ContNo2Contains == false){
+            CrudOperations.EditDetails("UPDATE Pilot_tbl SET PilotName = '" + txtName.getText() +
+                    "', PilotSurname = '" + txtSurname.getText() +
+                    "', Dob = '" + fdt +
+                    "', ContactNo1 = '" + txtContactNumber1.getText() +
+                    "', ContactNo2 = '" + txtContactNumber2.getText() + "' WHERE IDCardNumber = '" + cmbPilots.getSelectedItem() + "'");
+
+            JOptionPane.showMessageDialog(null, "Pilot Details Updated Successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
+            this.dispose();
+            new Home().setVisible(true);
+        }
     }//GEN-LAST:event_btnSaveActionPerformed
 
     /**
