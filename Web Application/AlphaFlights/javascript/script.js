@@ -1,17 +1,16 @@
-$(document).ready(function(){
-    $('#depCountry').change(function(){
-        //Selected Val
-        var inputVal = $(this).val();
-        alert("Value: " + inputVal);
+$("#oneWay").click(function(){
+    if($("#oneWay").is(':checked')){
+        document.getElementById("retDate").disabled = true;
+    }
+    else{
+        document.getElementById("retDate").disabled = false;
+    }
+});
 
-        $.ajax({
-            url: 'AlphaFlights/bookFlight.php',
-            type: 'POST',
-            data: {id:id},
-            success: function(data) {
-                console.log(data); // Inspect this in your console
-            }
-        });
-        
-    });
+$('#passengerInfo').hide();
+$('#flightDetails').show();
+
+$("#next").click(function() {
+    $('#passengerInfo').show();
+    $('#flightDetails').hide();
 });

@@ -36,6 +36,6 @@
             $country = $row['CountryName'];
             }
 
-            return "$airport <b>($country, $city)</b>";
+            return "$airport ($country, $city)";
         }
 ?>
