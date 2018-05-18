@@ -7,10 +7,12 @@ $("#oneWay").click(function(){
     }
 });
 
+/*alert("btn clicked");
 $('#passengerInfo').hide();
 $('#flightDetails').show();
 
 $("#next").click(function() {
+    //alert("btn clicked");
     $('#passengerInfo').show();
     $('#flightDetails').hide();
-});
+});*/

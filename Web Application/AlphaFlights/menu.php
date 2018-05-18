@@ -26,22 +26,32 @@
 
                 <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
                     <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-                        <li class="nav-item active">
-                            <a class="nav-link" href="index.php">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="about.php">About</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="contact.php">Contact</a>
-                        </li>
                         <?php
                             if(isset($_SESSION['email'])){
                                 ?>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="logout.php">Log out</a>
-                                </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="index.php">Book Flight</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="checkIn.php">Online check-In</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="account.php">My Account</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="logout.php"><b>Log out</b></a>
+                                    </li>
                                 <?php
+                            }
+                            else{
+                               ?>
+                                    <li class="nav-item pl-5">
+                                        <a class="nav-link" href="login.php">Login</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="register.php">Register</a>
+                                    </li>
+                                <?php 
                             }
                         ?>
                     </ul>

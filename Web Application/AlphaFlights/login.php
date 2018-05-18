@@ -3,7 +3,7 @@
     require_once("menu.php");
 
     if(isset($_SESSION['email'])){
-        header('Location: home.php');
+        header('Location: index.php');
     }
 ?>
     <div class="container">
