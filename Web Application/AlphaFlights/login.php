@@ -44,7 +44,7 @@
             if($count > 0){
                 $_SESSION['email'] = $email;
                 $_SESSION['time'] = time();
-                header('Location: home.php');
+                header('Location: index.php');
             }
             else{
                 $query = "SELECT* FROM account_tbl WHERE Email = '$email'";

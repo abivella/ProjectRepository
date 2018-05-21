@@ -15,11 +15,10 @@
 
     
     $class = $_SESSION['class'];
-    $depPrice = $_SESSION['depPrice'];
-    $retPrice = $_SESSION['retPrice'];
 
     $dep = $_SESSION['dep'];
     $ret = $_SESSION['ret'];
+  
 
     echo "dep: $dep";
     echo "ret: $ret";
@@ -28,13 +27,13 @@
 ?>
     <div class="container-fluid">
         <form method="post" id="passengerInfo">
-<?php
+<?php          
     for($i=1; $i <= $totalPassengers; $i++){
         ?>
             <div class="row mt-5 pt-5">
                 <div class="col-sm-1">
                 <?php
-                    echo "<label><b>Passenger ".$i."</b><label>"
+                    echo "<label><b>Passenger ".$i."</b></label>"
                 ?>
                 </div>
             </div>
@@ -107,28 +106,44 @@
                 <div class="col-sm-2">
                     <label>Sports Equipment (Kg)</label>
                     <?php
-                        echo '<input type="text" name="sportsEquip'.$i.'" class="form-control" placeholder="Equipment Weight(Kg)"><br/>';
+                        echo '<select name="sportsEquip'.$i.'" class="form-control">
+                                <option value="0">0Kg</option>
+                                <option value="2">2Kg</option>
+                                <option value="5">5Kg</option>
+                                <option value="7">7Kg</option>
+                                <option value="10">10Kg</option>
+                                <option value="15">15Kg</option>
+                                <option value="20">20Kg</option>
+                                </select>';
                     ?>
                 </div>
                 <div class="col-sm-2">
                     <label>Baby Equipment (Kg)</label>
                     <?php
-                        echo '<input type="text" name="babyEquip'.$i.'" class="form-control" placeholder="Equipment Weight(Kg)"><br/>';
+                        echo '<select name="babyEquip'.$i.'" class="form-control">
+                                <option value="0">0Kg</option>
+                                <option value="2">2Kg</option>
+                                <option value="5">5Kg</option>
+                                <option value="7">7Kg</option>
+                                <option value="10">10Kg</option>
+                                </select>';
                     ?>
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-sm-2">
-                    <label>Extra Luggage</label>
-                    <?php
-                        echo '<input type="checkbox" name="extraLugg'.$i.'" class="form-control extraLuggCkb"><br/>';
-                    ?>
-                </div>
-                <div class="col-sm-2">
                     <label class="extraLuggLbl">Extra Luggage Weight (Kg)</label>
                     <?php
-                        echo '<input type="text" name="extraLuggage'.$i.'" class="form-control extraLuggTxt" placeholder="Extra Luggage Weight(Kg)"><br/>';
+                        echo '<select name="extraLuggage'.$i.'" class="form-control">
+                                <option value="0">0Kg</option>
+                                <option value="2">2Kg</option>
+                                <option value="5">5Kg</option>
+                                <option value="7">7Kg</option>
+                                <option value="10">10Kg</option>
+                                <option value="15">15Kg</option>
+                                <option value="20">20Kg</option>
+                                </select>';
                     ?>
                 </div>
             </div>
@@ -152,7 +167,54 @@
                     </select>
                 </div>
             </div>     
-            <hr>     
+            <hr> 
+
+            <div class="row">
+                <div class="col-sm-4">
+                <?php
+                    //GET DEP PRICE
+                    $query = "SELECT * FROM flights_tbl WHERE FlightId = '$dep'";
+                    $conn = connectToMySQL();
+                    $result = mysqli_query($conn, $query)
+                    or die("Error in query: " . mysqli_error($conn));
+
+
+                    while ($row = mysqli_fetch_assoc($result)){
+                        $price = $row['Price'];
+                        echo "<input type='hidden' name='depPrice' value='$price'>";
+                        echo "<label>Departure Price</label>";
+                        $tPrice = $price*$totalPassengers;
+                        echo "<input type='text' class='form-control' value='€$tPrice' disabled>";
+                    }
+                ?>
+
+            
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-4">
+                <?php
+                    //GET RET PRICE
+                    $query = "SELECT * FROM flights_tbl WHERE FlightId = '$ret'";
+                    $conn = connectToMySQL();
+                    $result = mysqli_query($conn, $query)
+                    or die("Error in query: " . mysqli_error($conn));
+
+
+                    while ($row = mysqli_fetch_assoc($result)){
+                        $price = $row['Price'];
+                        echo "<input type='hidden' name='retPrice' value='$price'>";
+                        echo "<label>Return Price</label>";
+                        $rPrice = $price*$totalPassengers;
+                        echo "<input type='text' class='form-control' value='€$rPrice' disabled>";
+                    }
+                ?>
+
+            
+                </div>
+            </div>
+
         
 <?php
     } //for loop
@@ -168,14 +230,17 @@
     <?php
         if(isset($_POST['bookFlight'])){
             $conn = connectToMySQL();
-            $depFlight = $_GET['retFlight'];
-            $retFlight = $_GET['depFlight'];
+            //$depFlight = $_GET['retFlight'];
+            //$retFlight = $_GET['depFlight'];
+            $depPrice = $_POST['depPrice'];
+            
+            //$depPrice = null;
+            //$retPrice = null;
             for($i=1; $i <= $totalPassengers; $i++){
 
 
                 if(isset($_POST['insurance'.$i])){$insurance='Y';}else{$insurance='N';}
                 if(isset($_POST['contactPerson'.$i])){$contactPerson='Y';}else{$contactPerson='N';}
-                if(isset($_POST['extraLugg'.$i])){$extraLugg='Y';}else{$extraLugg='N';}
 
                 $name = $_POST['name'.$i];
                 $surname = $_POST['surname'.$i];                
@@ -188,13 +253,17 @@
                 $babyEquip = $_POST['babyEquip'.$i];
                 $type = $_POST['type'.$i];
 
-                $totalDepPrice = (int)$depPrice * (int)$totalPassengers;
-                $totalRetPrice = (int)$retPrice * (int)$totalPassengers;
+                
 
-                $finalPrice = $totalDepPrice + $totalRetPrice;
+                echo "dep price: $depPrice";
 
-                echo "dep flight: $depFlight";
-                echo "ret flight: $retFlight";
+                $totalDepPrice = (float)$depPrice * (float)$totalPassengers;
+               
+
+                $finalPrice = $totalDepPrice;
+
+                echo "dep flight: $dep";
+                echo "ret flight: $ret";
                 echo "name : $name";
                 echo "surname : $surname";
                 echo "title : $title";
@@ -205,8 +274,9 @@
                 echo "price for 1 passenger : $depPrice";
                 echo "total price : $totalDepPrice";
                 echo "passenger type: $type";
+                echo "class: $class";
 
-                /*$query = "SELECT* FROM passenger_tbl WHERE IDCardNo = '$idCardNo'";
+                $query = "SELECT* FROM passenger_tbl WHERE IDCardNo = '$idCardNo'";
                 $result = mysqli_query($conn, $query) or die("Error in query: ". mysqli_error($conn));
 
                 $row = mysqli_fetch_row($result);
@@ -214,26 +284,74 @@
 
                 if($count > 0){
                     echo "<div class='alert alert-danger'>Passesnger exists</div>";
-                }
-                else{
-                    $query = "INSERT INTO passenger_tbl(PassengerId, FirstName, LastName, Title, IsContactPerson, PhoneNumber, PassportNumber, IDCardNo) 
-                    VALUES(NULL, '$name', '$surname', '$title', '$contactPerson', '$phoneNumber', '$passportNumber', '$idCardNo')";
+                    $query = "UPDATE passenger_tbl SET FirstName = '$name', LastName = '$surname', Title = '$title', PassportNumber = '$passportNumber', IDCardNo = '$idCardNo' ";
                     
 
                     $result = mysqli_query($conn, $query)
                     or die("Error in query: " . mysqli_error($conn));
 
                     //Insert departure flight
-                    $query = "INSERT INTO passengerflight_tbl(BookingId, FlightId, PassengerId, ClassId, SportsEquipment, BabyEquipment, ExtraLuggage,
-                     ExtraLuggageWeight, isInsured, FinalPrice, TypeId, isCheckedIn)
-                     VALUES(NULL, '$depFlight',
+                    $query = "INSERT INTO passengerflight_tbl(BookingId, FlightId, PassengerId, ClassId, SportsEquipment, BabyEquipment,
+                     ExtraLuggageWeight, isInsured, FinalPrice, TypeId, isCheckedIn, IsContactPerson)
+                     VALUES(NULL, '$dep',
                      (SELECT PassengerId FROM Passenger_tbl WHERE IDCardNo = '$idCardNo'), 
-                     (SELECT ClassId FROM flightClass_tbl WHERE Class = '$class'), 
-                     '$sportEquip', '$babyEquip', '$extraLugg', '$extraLuggWeight', '$insurance', '$finalPrice', '$TypeId', 'N')";
+                     '$class', '$sportEquip', '$babyEquip', '$extraLuggWeight', '$insurance', '$depPrice', '$type', 'N', '$contactPerson')";
 
                     $result = mysqli_query($conn, $query)
                     or die("Error in query: " . mysqli_error($conn));
-                }*/
+
+                    //Insert return flight
+                    if($ret != ""){
+                        $retPrice = $_POST['retPrice'];
+                        $totalRetPrice = (float)$retPrice * (float)$totalPassengers;
+                        $finalPrice = $totalDepPrice + $totalRetPrice;
+
+                        //Insert rerturn flight
+                        $query = "INSERT INTO passengerflight_tbl(BookingId, FlightId, PassengerId, ClassId, SportsEquipment, BabyEquipment, ExtraLuggage,
+                        ExtraLuggageWeight, isInsured, FinalPrice, TypeId, isCheckedIn, IsContactPerson)
+                        VALUES(NULL, '$ret',
+                        (SELECT PassengerId FROM Passenger_tbl WHERE IDCardNo = '$idCardNo'), 
+                        '$class', '$sportEquip', '$babyEquip', '$extraLugg', '$extraLuggWeight', '$insurance', '$retPrice', '$type', 'N', '$contactPerson')";
+
+                        $result = mysqli_query($conn, $query)
+                        or die("Error in query: " . mysqli_error($conn));
+                    }
+                }
+                else{
+                    $query = "INSERT INTO passenger_tbl(PassengerId, FirstName, LastName, Title, PhoneNumber, PassportNumber, IDCardNo) 
+                    VALUES(NULL, '$name', '$surname', '$title', '$phoneNumber', '$passportNumber', '$idCardNo')";
+                    
+
+                    $result = mysqli_query($conn, $query)
+                    or die("Error in query: " . mysqli_error($conn));
+
+                    //Insert departure flight
+                    $query = "INSERT INTO passengerflight_tbl(BookingId, FlightId, PassengerId, ClassId, SportsEquipment, BabyEquipment,
+                     ExtraLuggageWeight, isInsured, FinalPrice, TypeId, isCheckedIn, IsContactPerson)
+                     VALUES(NULL, '$dep',
+                     (SELECT PassengerId FROM Passenger_tbl WHERE IDCardNo = '$idCardNo'), 
+                     '$class', '$sportEquip', '$babyEquip', '$extraLuggWeight', '$insurance', '$depPrice', '$type', 'N', '$contactPerson')";
+
+                    $result = mysqli_query($conn, $query)
+                    or die("Error in query: " . mysqli_error($conn));
+
+                    //Insert return flight
+                    if($ret != ""){
+                        $retPrice = $_POST['retPrice'];
+                        $totalRetPrice = (float)$retPrice * (float)$totalPassengers;
+                        $finalPrice = $totalDepPrice + $totalRetPrice;
+
+                        //Insert rerturn flight
+                        $query = "INSERT INTO passengerflight_tbl(BookingId, FlightId, PassengerId, ClassId, SportsEquipment, BabyEquipment,
+                        ExtraLuggageWeight, isInsured, FinalPrice, TypeId, isCheckedIn, IsContactPerson)
+                        VALUES(NULL, '$ret',
+                        (SELECT PassengerId FROM Passenger_tbl WHERE IDCardNo = '$idCardNo'), 
+                        '$class', '$sportEquip', '$babyEquip', '$extraLuggWeight', '$insurance', '$retPrice', '$type', 'N', '$contactPerson')";
+
+                        $result = mysqli_query($conn, $query)
+                        or die("Error in query: " . mysqli_error($conn));
+                        }
+                }
             }
         }
     ?>
