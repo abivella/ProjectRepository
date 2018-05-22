@@ -8,6 +8,7 @@
         header('Location: login.php');
     }
 
+    $email = $_SESSION['email'];
     $adult = $_SESSION['adult'];
     $child = $_SESSION['child'];   
     $infant = $_SESSION['infant'];
@@ -215,7 +216,6 @@
                 </div>
             </div>
 
-        
 <?php
     } //for loop
 ?>      
@@ -230,12 +230,14 @@
     <?php
         if(isset($_POST['bookFlight'])){
             $conn = connectToMySQL();
-            //$depFlight = $_GET['retFlight'];
-            //$retFlight = $_GET['depFlight'];
             $depPrice = $_POST['depPrice'];
+
+            $query = "SELECT* FROM account_tbl WHERE Email = '$email'";
+            $result = mysqli_query($conn, $query) or die("Error in query: ". mysqli_error($conn));
+            while($row = mysqli_fetch_assoc($result)){
+                $accountId = $row['AccountId'];
+            }
             
-            //$depPrice = null;
-            //$retPrice = null;
             for($i=1; $i <= $totalPassengers; $i++){
 
 
@@ -284,7 +286,7 @@
 
                 if($count > 0){
                     echo "<div class='alert alert-danger'>Passesnger exists</div>";
-                    $query = "UPDATE passenger_tbl SET FirstName = '$name', LastName = '$surname', Title = '$title', PassportNumber = '$passportNumber', IDCardNo = '$idCardNo' ";
+                    $query = "UPDATE passenger_tbl SET FirstName = '$name', LastName = '$surname', Title = '$title', PassportNumber = '$passportNumber', PhoneNumber = '$phoneNumber', IDCardNo = '$idCardNo' WHERE IDCardNo='$idCardNo'";
                     
 
                     $result = mysqli_query($conn, $query)
@@ -292,10 +294,10 @@
 
                     //Insert departure flight
                     $query = "INSERT INTO passengerflight_tbl(BookingId, FlightId, PassengerId, ClassId, SportsEquipment, BabyEquipment,
-                     ExtraLuggageWeight, isInsured, FinalPrice, TypeId, isCheckedIn, IsContactPerson)
+                     ExtraLuggageWeight, isInsured, FinalPrice, TypeId, isCheckedIn, IsContactPerson, AccountId)
                      VALUES(NULL, '$dep',
                      (SELECT PassengerId FROM Passenger_tbl WHERE IDCardNo = '$idCardNo'), 
-                     '$class', '$sportEquip', '$babyEquip', '$extraLuggWeight', '$insurance', '$depPrice', '$type', 'N', '$contactPerson')";
+                     '$class', '$sportEquip', '$babyEquip', '$extraLuggWeight', '$insurance', '$depPrice', '$type', 'N', '$contactPerson', '$accountId')";
 
                     $result = mysqli_query($conn, $query)
                     or die("Error in query: " . mysqli_error($conn));
@@ -308,10 +310,10 @@
 
                         //Insert rerturn flight
                         $query = "INSERT INTO passengerflight_tbl(BookingId, FlightId, PassengerId, ClassId, SportsEquipment, BabyEquipment, ExtraLuggage,
-                        ExtraLuggageWeight, isInsured, FinalPrice, TypeId, isCheckedIn, IsContactPerson)
+                        ExtraLuggageWeight, isInsured, FinalPrice, TypeId, isCheckedIn, IsContactPerson, AccountId)
                         VALUES(NULL, '$ret',
                         (SELECT PassengerId FROM Passenger_tbl WHERE IDCardNo = '$idCardNo'), 
-                        '$class', '$sportEquip', '$babyEquip', '$extraLugg', '$extraLuggWeight', '$insurance', '$retPrice', '$type', 'N', '$contactPerson')";
+                        '$class', '$sportEquip', '$babyEquip', '$extraLuggWeight', '$insurance', '$retPrice', '$type', 'N', '$contactPerson', '$accountId')";
 
                         $result = mysqli_query($conn, $query)
                         or die("Error in query: " . mysqli_error($conn));
@@ -327,10 +329,10 @@
 
                     //Insert departure flight
                     $query = "INSERT INTO passengerflight_tbl(BookingId, FlightId, PassengerId, ClassId, SportsEquipment, BabyEquipment,
-                     ExtraLuggageWeight, isInsured, FinalPrice, TypeId, isCheckedIn, IsContactPerson)
+                     ExtraLuggageWeight, isInsured, FinalPrice, TypeId, isCheckedIn, IsContactPerson, AccountId)
                      VALUES(NULL, '$dep',
                      (SELECT PassengerId FROM Passenger_tbl WHERE IDCardNo = '$idCardNo'), 
-                     '$class', '$sportEquip', '$babyEquip', '$extraLuggWeight', '$insurance', '$depPrice', '$type', 'N', '$contactPerson')";
+                     '$class', '$sportEquip', '$babyEquip', '$extraLuggWeight', '$insurance', '$depPrice', '$type', 'N', '$contactPerson', '$accountId')";
 
                     $result = mysqli_query($conn, $query)
                     or die("Error in query: " . mysqli_error($conn));
@@ -343,10 +345,10 @@
 
                         //Insert rerturn flight
                         $query = "INSERT INTO passengerflight_tbl(BookingId, FlightId, PassengerId, ClassId, SportsEquipment, BabyEquipment,
-                        ExtraLuggageWeight, isInsured, FinalPrice, TypeId, isCheckedIn, IsContactPerson)
+                        ExtraLuggageWeight, isInsured, FinalPrice, TypeId, isCheckedIn, IsContactPerson, AccountId)
                         VALUES(NULL, '$ret',
                         (SELECT PassengerId FROM Passenger_tbl WHERE IDCardNo = '$idCardNo'), 
-                        '$class', '$sportEquip', '$babyEquip', '$extraLuggWeight', '$insurance', '$retPrice', '$type', 'N', '$contactPerson')";
+                        '$class', '$sportEquip', '$babyEquip', '$extraLuggWeight', '$insurance', '$retPrice', '$type', 'N', '$contactPerson', '$accountId')";
 
                         $result = mysqli_query($conn, $query)
                         or die("Error in query: " . mysqli_error($conn));
@@ -355,3 +357,5 @@
             }
         }
     ?>
+
+    <?php require_once('footer.php'); ?>

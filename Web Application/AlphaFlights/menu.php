@@ -25,7 +25,7 @@
                 </a>
 
                 <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
-                    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">  
                         <?php
                             if(isset($_SESSION['email'])){
                                 ?>
@@ -37,7 +37,13 @@
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link" href="account.php">My Account</a>
-                                    </li>
+                                    </li>   
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="myFlights.php">My Flights</a>
+                                    </li>   
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="help.php">Help</a>
+                                    </li>   
                                     <li class="nav-item">
                                         <a class="nav-link" href="logout.php"><b>Log out</b></a>
                                     </li>
@@ -49,7 +55,10 @@
                                         <a class="nav-link" href="login.php">Login</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" href="register.php">Register</a>
+                                        <a class="nav-link" href="signUp.php">Register</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="help.php">Help</a>
                                     </li>
                                 <?php 
                             }
