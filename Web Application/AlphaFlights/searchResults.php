@@ -15,8 +15,6 @@
 
     $class = $_GET['class'];
 
-    echo $totalPassengers;
-
     $query = "SELECT * FROM flights_tbl WHERE AirportDep = '$depAirport' AND AirportDest = '$destAirport' AND FlightDate = '$depDate'";
 
     if(isset($_POST['next'])){
@@ -31,9 +29,6 @@
 
         $_SESSION['retPrice'] = $retPrice;
         $_SESSION['depPrice'] = $depPrice;
-
-        //$_SESSION['retPrice'] = $_POST['retPrice'];  //returns last price
-        //$_SESSION['depPrice'] = $_POST['depPrice'];  //returns last price
 
         echo " dep price: ";   
         header("Location: passengerInfo.php", true);
@@ -71,8 +66,6 @@
                             <div class="col-sm-12">
                                 <?php
                                     echo "<tr><td>$row[FlightNo]</td> <td>".airportInfo($row['AirportDep'])."</td> <td>".airportInfo($row['AirportDest'])."</td> <td>$row[FlightDate]</td> <td>$row[Duration]</td> <td>$row[TimeFrom]</td> <td>$row[TimeTo]</td> <td>€$row[Price]</td></tr>";
-                                    //$depPrice = $row['Price'];
-                                    //echo '<input type="hidden" name="depPrice" value="'.$depPrice.'">';
                                 ?>
                             </div>
                         </div>
@@ -130,8 +123,6 @@
                                         <div class="col-sm-12">
                                             <?php
                                                 echo "<tr><td>$row[FlightNo]</td> <td>".airportInfo($row['AirportDep'])."</td> <td>".airportInfo($row['AirportDest'])."</td> <td>$row[FlightDate]</td> <td>$row[Duration]</td> <td>$row[TimeFrom]</td> <td>$row[TimeTo]</td> <td name='retPrice'>€$row[Price]</td></tr>";
-                                                //$price = $row['Price'];
-                                                //echo '<input type="hidden" name="depPrice" value="'.$price.'">';
                                             ?>
                                         </div>
                                     </div>
@@ -164,24 +155,9 @@
             ?> 
             <div class="row mt-4">
                 <div class="col-sm-4">
-                    <!--<a class="btn btn-primary btn-block" name="next" href="passengerInfo.php?passengerAdult=<?php echo $adult;?>&passengerChild=<?php echo $child;?>&passengerInfant=<?php echo $infant;?>&class=<?php echo $class;?>&retPrice=<?php echo $retPrice;?>&depPrice=<?php echo $depPrice;?>">Next</a>-->
                     <button class="btn btn-primary btn-block" name="next">Next</button>
                 </div>
             </div>
-        </form> 
-        
-        <?php   
-           /* if(isset($_POST['next'])){
-                $_SESSION['dep'] = $_POST['selectDep'];
-                $_SESSION['ret'] = $_POST['selectRet'];
-                $_SESSION['adult'] = $adult;
-                $_SESSION['child'] = $child;
-                $_SESSION['infant'] = $infant;
-                $_SESSION['class'] = $class;
-                $_SESSION['retPrice'] = $retPrice;
-                $_SESSION['depPrice'] = $depPrice;
-                header("Location: passengerInfo.php", true);
-            } */
-        ?>        
+        </form>        
     </div>
 <?php require_once('footer.php'); ?>

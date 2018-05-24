@@ -20,11 +20,6 @@
     $dep = $_SESSION['dep'];
     $ret = $_SESSION['ret'];
   
-
-    echo "dep: $dep";
-    echo "ret: $ret";
-
-    echo "total passengers: $totalPassengers";
 ?>
     <div class="container-fluid">
         <form method="post" id="passengerInfo">
@@ -255,28 +250,11 @@
                 $babyEquip = $_POST['babyEquip'.$i];
                 $type = $_POST['type'.$i];
 
-                
-
-                echo "dep price: $depPrice";
 
                 $totalDepPrice = (float)$depPrice * (float)$totalPassengers;
                
 
                 $finalPrice = $totalDepPrice;
-
-                echo "dep flight: $dep";
-                echo "ret flight: $ret";
-                echo "name : $name";
-                echo "surname : $surname";
-                echo "title : $title";
-                echo "passport number : $passportNumber";
-                echo "phone number : $phoneNumber";
-                echo "id number : $idCardNo";
-                echo "extra luggage weight : $extraLuggWeight";
-                echo "price for 1 passenger : $depPrice";
-                echo "total price : $totalDepPrice";
-                echo "passenger type: $type";
-                echo "class: $class";
 
                 $query = "SELECT* FROM passenger_tbl WHERE IDCardNo = '$idCardNo'";
                 $result = mysqli_query($conn, $query) or die("Error in query: ". mysqli_error($conn));
@@ -285,7 +263,6 @@
                 $count = $row[0];
 
                 if($count > 0){
-                    echo "<div class='alert alert-danger'>Passesnger exists</div>";
                     $query = "UPDATE passenger_tbl SET FirstName = '$name', LastName = '$surname', Title = '$title', PassportNumber = '$passportNumber', PhoneNumber = '$phoneNumber', IDCardNo = '$idCardNo' WHERE IDCardNo='$idCardNo'";
                     
 
@@ -318,6 +295,7 @@
                         $result = mysqli_query($conn, $query)
                         or die("Error in query: " . mysqli_error($conn));
                     }
+                    echo '<div class="alert alert-success">Booking Successful</div>';
                 }
                 else{
                     $query = "INSERT INTO passenger_tbl(PassengerId, FirstName, LastName, Title, PhoneNumber, PassportNumber, IDCardNo) 
@@ -352,7 +330,8 @@
 
                         $result = mysqli_query($conn, $query)
                         or die("Error in query: " . mysqli_error($conn));
-                        }
+                    }
+                    echo '<div class="alert alert-success">Booking Successful</div>';
                 }
             }
         }

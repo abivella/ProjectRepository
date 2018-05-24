@@ -22,11 +22,13 @@ public class ViewPassengers extends javax.swing.JFrame {
      */
     public ViewPassengers() {
         initComponents();
+        
+        this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
     
     public void view(){
         //CrudOperations.ViewDetailsLbl("SELECT FirstName FROM passenger_tbl INNER JOIN passengerflight_tbl ON passengerflight_tbl.PassengerId = passenger_tbl.PassengerId WHERE passengerflight_tbl.FlightId=(SELECT FlightId FROM flights_tbl WHERE FlightNo='" + txtFlightNo + "')", lblDetails);
-    
+        
     }
 
     /**

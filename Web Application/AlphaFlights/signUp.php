@@ -57,8 +57,9 @@
             $result = mysqli_query(connectToMySQL(), $query) or die("Error in query: ". mysqli_error(connectToMySQL()));
             
             ?>
-            <div class="alert alert-success">Account Created Successfully</div>
+            <div class="alert alert-success">Account Created Successfully</div>        
             <?php
+            header("Location: index.php");
         }
     } 
 ?>
