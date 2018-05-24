@@ -187,14 +187,17 @@ public class CreateAirport extends javax.swing.JFrame {
         CrudOperations.Validation(txtAirportName, "NoDigits");
         boolean contains = CrudOperations.Validation(txtAirportName, "NoDigits");
         
-        if(contains == false){
-           CrudOperations.CreateRecord("INSERT INTO Airport_tbl (AirportId, AirportName, CityId) VALUES (NULL, '" + txtAirportName.getText() + "'," + "(SELECT CityId FROM City_tbl WHERE CityName = '" + cmbCity.getSelectedItem() + "'" + ")" + ")");
-           JOptionPane.showMessageDialog(null, "Airport Added Successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
+        boolean found = CrudOperations.CheckRow2("SELECT COUNT(*) FROM airport_tbl WHERE AirportName='" + txtAirportName.getText() + "'");
+        
+        if(found == true){
+            JOptionPane.showMessageDialog(null, "Airport Already Exist!", "Error", JOptionPane.ERROR_MESSAGE);
         }
-        
-        
-        //this.dispose();
-        //new Home().setVisible(true);
+        else if(found == false){
+            if(contains == false){
+                CrudOperations.CreateRecord("INSERT INTO Airport_tbl (AirportId, AirportName, CityId) VALUES (NULL, '" + txtAirportName.getText() + "'," + "(SELECT CityId FROM City_tbl WHERE CityName = '" + cmbCity.getSelectedItem() + "'" + ")" + ")");
+                JOptionPane.showMessageDialog(null, "Airport Added Successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
+            }
+        }
     }//GEN-LAST:event_btnAddAirportActionPerformed
 
     private void btnAddCityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddCityActionPerformed
@@ -202,11 +205,17 @@ public class CreateAirport extends javax.swing.JFrame {
         CrudOperations.Validation(txtCity, "NoDigits");
         boolean contains = CrudOperations.Validation(txtCity, "NoDigits");
         
-        if(contains == false){
-           CrudOperations.CreateRecord("INSERT INTO City_tbl (CityId, CityName, CountryId) VALUES (NULL, '" + txtCity.getText() + "'," + "(SELECT CountryId FROM Country_tbl WHERE CountryName = '" + cmbCountry02.getSelectedItem() + "'" + ")" + ")");
-           JOptionPane.showMessageDialog(null, "City Added Successfully", "Success", JOptionPane.INFORMATION_MESSAGE); 
+        boolean found = CrudOperations.CheckRow2("SELECT COUNT(*) FROM city_tbl WHERE CityName='" + txtCity.getText() + "'");
+        
+        if(found == true){
+            JOptionPane.showMessageDialog(null, "City Already Exist!", "Error", JOptionPane.ERROR_MESSAGE);
         }
-
+        else if (found == false){
+            if(contains == false){
+                CrudOperations.CreateRecord("INSERT INTO City_tbl (CityId, CityName, CountryId) VALUES (NULL, '" + txtCity.getText() + "'," + "(SELECT CountryId FROM Country_tbl WHERE CountryName = '" + cmbCountry02.getSelectedItem() + "'" + ")" + ")");
+                JOptionPane.showMessageDialog(null, "City Added Successfully", "Success", JOptionPane.INFORMATION_MESSAGE); 
+            }
+        }
         CrudOperations.FillCmbs("SELECT CityName FROM City_tbl WHERE CountryId IN (SELECT CountryId FROM country_tbl WHERE CountryName = '" + cmbCountry.getSelectedItem() +  "')", cmbCity);
     }//GEN-LAST:event_btnAddCityActionPerformed
 
@@ -215,9 +224,16 @@ public class CreateAirport extends javax.swing.JFrame {
         CrudOperations.Validation(txtCountry, "NoDigits");
         boolean contains = CrudOperations.Validation(txtCountry, "NoDigits");
         
-        if(contains == false){
-           CrudOperations.CreateRecord("INSERT INTO Country_tbl (CountryId, CountryName) VALUES (NULL, '" + txtCountry.getText() + "'" + ")");
-           JOptionPane.showMessageDialog(null, "Country Added Successfully", "Success", JOptionPane.INFORMATION_MESSAGE); 
+        boolean found = CrudOperations.CheckRow2("SELECT COUNT(*) FROM country_tbl WHERE CountryName='" + txtCountry.getText() + "'");
+        
+        if(found == true){
+            JOptionPane.showMessageDialog(null, "Country Already Exist!", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        else if(found == false){
+            if(contains == false){
+                CrudOperations.CreateRecord("INSERT INTO Country_tbl (CountryId, CountryName) VALUES (NULL, '" + txtCountry.getText() + "'" + ")");
+                JOptionPane.showMessageDialog(null, "Country Added Successfully", "Success", JOptionPane.INFORMATION_MESSAGE); 
+            }
         }
         
         CrudOperations.FillCmbs("SELECT CountryName FROM Country_tbl", cmbCountry);

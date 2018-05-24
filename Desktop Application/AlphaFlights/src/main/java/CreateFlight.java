@@ -63,6 +63,7 @@ public class CreateFlight extends javax.swing.JFrame {
         
         String timeFrom = cmbTimeFromHrs.getSelectedItem() + ":" + cmbTimeFromMins.getSelectedItem();
         String timeTo = cmbTimeToHrs.getSelectedItem() + ":" + cmbTimeToMins.getSelectedItem();
+
         
         CrudOperations.CreateRecord("INSERT INTO Flights_tbl(FlightId, FlightNo, NoOfCrew, FlightDate, TimeFrom, "
                     + "TimeTo, Duration, AircraftId, AirportDep, AirportDest, Price) "
@@ -411,9 +412,18 @@ public class CreateFlight extends javax.swing.JFrame {
         
         CrudOperations.Validation(txtPrice, "NoString");
         boolean PriceContains = CrudOperations.Validation(txtPrice, "NoString");
+   
+        boolean found = CrudOperations.CheckRow2("SELECT COUNT(*) FROM flights_tbl WHERE FlightNo='" + txtFlightNumber.getText() + "'");
+        System.out.println(found);
         
-        if(FlightNoContains == false && CrewNoContains == false && PriceContains == false){
-           insertFlight(); 
+        if(found == true){
+            JOptionPane.showMessageDialog(null, "Flight Number Already Exist!", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        else if(found == false){
+            if(FlightNoContains == false && CrewNoContains == false && PriceContains == false){
+                insertFlight(); 
+            }
+            
         }
 
     }//GEN-LAST:event_jButton1ActionPerformed

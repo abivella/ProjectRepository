@@ -21,7 +21,6 @@ public class Login extends javax.swing.JFrame {
      */
     public Login() {
         initComponents();
-        
         lblLogo.setIcon(new ImageIcon("Images/Logo.png"));
         
     }

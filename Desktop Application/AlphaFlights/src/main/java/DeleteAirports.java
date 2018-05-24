@@ -88,7 +88,7 @@ public class DeleteAirports extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(cmbAirports, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lblAirport))))
-                .addContainerGap(233, Short.MAX_VALUE))
+                .addContainerGap(488, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -114,14 +114,23 @@ public class DeleteAirports extends javax.swing.JFrame {
     private void btnDelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDelActionPerformed
         // TODO add your handling code here:
         Object[] options = {"Delete", "Cancel"};
-        int option = JOptionPane.showOptionDialog(null, "Are you sure you want to delete the record?", "Please confirm",JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
-        if(option == JOptionPane.YES_OPTION){
-            CrudOperations.DeleteRecord("DELETE FROM Airport_tbl WHERE AirportName= '" + cmbAirports.getSelectedItem() + "'");
-            
-            JOptionPane.showMessageDialog(null, "Airport Deleted Successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
-            this.dispose();
-            new Home().setVisible(true);
+        Object[] options2 = {"Ok"};
+        boolean found = CrudOperations.CheckRow("SELECT AirportDep, AirportDest FROM flights_tbl WHERE AirportDep = (SELECT AirportId FROM airport_tbl WHERE AirportName = '" + cmbAirports.getSelectedItem()+ "') OR AirportDest = (SELECT AirportId FROM airport_tbl WHERE AirportName = '" + cmbAirports.getSelectedItem()+ "')", "DELETE FROM airport_tbl WHERE AirportName= '" + cmbAirports.getSelectedItem() + "'");
+        
+        if (found == true){
+            JOptionPane.showOptionDialog(null, "Airport cannot be deleted! Flight has a departure or destination with the chosen airport!", "Please confirm",JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,null,options2,options2[0]);
         }
+        else if(found == false){
+            int option = JOptionPane.showOptionDialog(null, "Are you sure you want to delete the record?", "Please confirm",JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
+                if(option == JOptionPane.YES_OPTION){
+                CrudOperations.DeleteRecord("DELETE FROM Airport_tbl WHERE AirportName= '" + cmbAirports.getSelectedItem() + "'");
+
+                JOptionPane.showMessageDialog(null, "Airport Deleted Successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
+                this.dispose();
+                new Home().setVisible(true);
+            } 
+        }
+       
     }//GEN-LAST:event_btnDelActionPerformed
 
     private void cmbCountryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbCountryActionPerformed

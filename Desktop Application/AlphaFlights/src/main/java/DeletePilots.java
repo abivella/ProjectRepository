@@ -85,7 +85,6 @@ public class DeletePilots extends javax.swing.JFrame {
         boolean found = CrudOperations.CheckRow("SELECT PilotId FROM flightpilot_tbl WHERE PilotId = (SELECT PilotId FROM Pilot_tbl WHERE IDCardNumber = '" + cmbPilots.getSelectedItem()+ "')", "DELETE FROM Pilot_tbl WHERE IDCardNumber= '" + cmbPilots.getSelectedItem() + "'");
         
         if (found == true){
-            CrudOperations.CheckRow("SELECT PilotId FROM flightpilot_tbl WHERE (SELECT PilotId FROM Pilot_tbl WHERE IDCardNumber = '" + cmbPilots.getSelectedItem()+ ")", "DELETE FROM Pilot_tbl WHERE IDCardNumber= '" + cmbPilots.getSelectedItem() + "'");
             JOptionPane.showOptionDialog(null, "Pilot cannot be deleted! Please delete all flights assigned to pilot!", "Please confirm",JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,null,options2,options2[0]);
         }
         else if(found == false){

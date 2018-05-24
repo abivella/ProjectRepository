@@ -37,8 +37,8 @@ public class CrudOperationsTest {
     public void testValidation() {
         System.out.println("Validation");
         JTextField txt = null;
-        String typeOfVal = "";
-        boolean expResult = false;
+        String typeOfVal = "NoDigit";
+        boolean expResult = true;
         boolean result = CrudOperations.Validation(txt, typeOfVal);
         assertTrue(expResult);
         // TODO review the generated test code and remove the default call to fail.

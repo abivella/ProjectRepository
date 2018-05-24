@@ -81,14 +81,22 @@ public class DeleteAircrafts extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         Object[] options = {"Delete", "Cancel"};
-        int option = JOptionPane.showOptionDialog(null, "Are you sure you want to delete the record?", "Please confirm",JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
-        if(option == JOptionPane.YES_OPTION){
-            CrudOperations.DeleteRecord("DELETE FROM Aircraft_tbl WHERE AircraftName= '" + cmbAircraftName.getSelectedItem() + "'");
-            
-            JOptionPane.showMessageDialog(null, "Aircraft Deleted Successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
-            this.dispose();
-            new Home().setVisible(true);
+        Object[] options2 = {"Ok"};
+        boolean found = CrudOperations.CheckRow("SELECT AircraftId FROM flights_tbl WHERE AircraftId = (SELECT AircraftId FROM aircraft_tbl WHERE AircraftName = '" + cmbAircraftName.getSelectedItem()+ "')", "DELETE FROM aircraft_tbl WHERE AircraftId= '" + cmbAircraftName.getSelectedItem() + "'");
+        
+        if (found == true){
+            JOptionPane.showOptionDialog(null, "Aircraft cannot be deleted! Please delete all flights using this aircraft!", "Please confirm",JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,null,options2,options2[0]);
         }
+        else if(found==false){
+           int option = JOptionPane.showOptionDialog(null, "Are you sure you want to delete the record?", "Please confirm",JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
+            if(option == JOptionPane.YES_OPTION){
+                CrudOperations.DeleteRecord("DELETE FROM Aircraft_tbl WHERE AircraftName= '" + cmbAircraftName.getSelectedItem() + "'");
+
+                JOptionPane.showMessageDialog(null, "Aircraft Deleted Successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
+                this.dispose();
+                new Home().setVisible(true);
+            } 
+        } 
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**

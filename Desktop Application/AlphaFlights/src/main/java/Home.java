@@ -35,6 +35,8 @@ public class Home extends javax.swing.JFrame {
         lblLogo = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
+        jMenuItem3 = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         FlightMenu = new javax.swing.JMenu();
@@ -54,7 +56,6 @@ public class Home extends javax.swing.JFrame {
         DelAircraftMenu = new javax.swing.JMenuItem();
         AirportMenu = new javax.swing.JMenu();
         CreateAirportMenu = new javax.swing.JMenuItem();
-        EditAirportMenu = new javax.swing.JMenuItem();
         DelAirportMenu1 = new javax.swing.JMenuItem();
 
         jMenu3.setText("jMenu3");
@@ -66,6 +67,22 @@ public class Home extends javax.swing.JFrame {
         lblTitle.setText("AlphaFlights");
 
         jMenu1.setText("File");
+
+        jMenuItem3.setText("Help");
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem3ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem3);
+
+        jMenuItem2.setText("Search");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem2);
 
         jMenuItem1.setText("Exit");
         jMenu1.add(jMenuItem1);
@@ -121,6 +138,11 @@ public class Home extends javax.swing.JFrame {
         PilotMenu.add(CreatePilotMenu);
 
         ViewPilotMenu.setText("View Pilot");
+        ViewPilotMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ViewPilotMenuActionPerformed(evt);
+            }
+        });
         PilotMenu.add(ViewPilotMenu);
 
         EditPilotMenu.setText("Edit Pilot");
@@ -152,6 +174,11 @@ public class Home extends javax.swing.JFrame {
         AircraftsMenu.add(CreateAircraftMenu);
 
         ViewAircraftMenu.setText("View Aircraft");
+        ViewAircraftMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ViewAircraftMenuActionPerformed(evt);
+            }
+        });
         AircraftsMenu.add(ViewAircraftMenu);
 
         EditAircraftMenu.setText("Edit Aircraft");
@@ -181,14 +208,6 @@ public class Home extends javax.swing.JFrame {
             }
         });
         AirportMenu.add(CreateAirportMenu);
-
-        EditAirportMenu.setText("Edit Airport");
-        EditAirportMenu.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                EditAirportMenuActionPerformed(evt);
-            }
-        });
-        AirportMenu.add(EditAirportMenu);
 
         DelAirportMenu1.setText("Delete Airport");
         DelAirportMenu1.addActionListener(new java.awt.event.ActionListener() {
@@ -245,11 +264,6 @@ public class Home extends javax.swing.JFrame {
         new EditAircrafts().setVisible(true);
     }//GEN-LAST:event_EditAircraftMenuActionPerformed
 
-    private void EditAirportMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EditAirportMenuActionPerformed
-        // TODO add your handling code here:
-        
-    }//GEN-LAST:event_EditAirportMenuActionPerformed
-
     private void CreateFlightMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CreateFlightMenuActionPerformed
         // TODO add your handling code here:
         new CreateFlight().setVisible(true);
@@ -294,6 +308,26 @@ public class Home extends javax.swing.JFrame {
         // TODO add your handling code here:
         new DeleteAirports().setVisible(true);
     }//GEN-LAST:event_DelAirportMenu1ActionPerformed
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        // TODO add your handling code here:
+        new ViewPassengers().setVisible(true);
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+        // TODO add your handling code here:
+        new help().setVisible(true);
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
+
+    private void ViewAircraftMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ViewAircraftMenuActionPerformed
+        // TODO add your handling code here:
+        new ViewAircrafts().setVisible(true);
+    }//GEN-LAST:event_ViewAircraftMenuActionPerformed
+
+    private void ViewPilotMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ViewPilotMenuActionPerformed
+        // TODO add your handling code here:
+        new ViewPilots().setVisible(true);
+    }//GEN-LAST:event_ViewPilotMenuActionPerformed
 
     /**
      * @param args the command line arguments
@@ -342,7 +376,6 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JMenuItem DelFlightMenu;
     private javax.swing.JMenuItem DelPilotMenu;
     private javax.swing.JMenuItem EditAircraftMenu;
-    private javax.swing.JMenuItem EditAirportMenu;
     private javax.swing.JMenuItem EditFlightMenu;
     private javax.swing.JMenuItem EditPilotMenu;
     private javax.swing.JMenu FlightMenu;
@@ -355,6 +388,8 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JLabel lblLogo;
     private javax.swing.JLabel lblTitle;
     // End of variables declaration//GEN-END:variables

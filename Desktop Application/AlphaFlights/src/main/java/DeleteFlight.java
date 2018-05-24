@@ -82,15 +82,23 @@ public class DeleteFlight extends javax.swing.JFrame {
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
         // TODO add your handling code here: 
         Object[] options = {"Delete", "Cancel"};
-        int option = JOptionPane.showOptionDialog(null, "Are you sure you want to delete the record?", "Please confirm",JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
-        if(option == JOptionPane.YES_OPTION){
-            CrudOperations.DeleteRecord("DELETE FROM flightpilot_tbl WHERE FlightId = (SELECT FlightId FROM flights_tbl WHERE FlightNo = '" + cmbFlightNumber.getSelectedItem() + "')");
-            CrudOperations.DeleteRecord("DELETE FROM flights_tbl WHERE FlightNo = '" + cmbFlightNumber.getSelectedItem() + "'");
-            
-            JOptionPane.showMessageDialog(null, "Flight Deleted Successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
-            this.dispose();
-            new Home().setVisible(true);
+        Object[] options2 = {"Ok"};
+        boolean found = CrudOperations.CheckRow("SELECT FlightId FROM passengerFlight_tbl WHERE FlightId = (SELECT FlightId FROM flights_tbl WHERE FlightNo = '" + cmbFlightNumber.getSelectedItem()+ "')", "DELETE FROM flights_tbl WHERE FlightNo= '" + cmbFlightNumber.getSelectedItem() + "'");
+        
+        if (found == true){
+            JOptionPane.showOptionDialog(null, "Flight cannot be deleted! Flight contains passengers!", "Please confirm",JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,null,options2,options2[0]);
         }
+        else if(found == false){
+            int option = JOptionPane.showOptionDialog(null, "Are you sure you want to delete the record?", "Please confirm",JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
+            if(option == JOptionPane.YES_OPTION){
+                CrudOperations.DeleteRecord("DELETE FROM flightpilot_tbl WHERE FlightId = (SELECT FlightId FROM flights_tbl WHERE FlightNo = '" + cmbFlightNumber.getSelectedItem() + "')");
+                CrudOperations.DeleteRecord("DELETE FROM flights_tbl WHERE FlightNo = '" + cmbFlightNumber.getSelectedItem() + "'");
+
+                JOptionPane.showMessageDialog(null, "Flight Deleted Successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
+                this.dispose();
+                new Home().setVisible(true);
+            }
+        }    
     }//GEN-LAST:event_btnDeleteActionPerformed
 
     /**

@@ -60,9 +60,9 @@ public class CrudOperations {
                 JOptionPane.showOptionDialog(null, "Field should not be empty", "Error", JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE, null, options, null);
                 contains = true;
             }
-            else if(contains == true){
+            /*else if(contains == true){
                 JOptionPane.showOptionDialog(null, "Field should not contain letters", "Error", JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE, null, options, null);
-            }
+            }*/
         }
         
         
@@ -96,7 +96,40 @@ public class CrudOperations {
             
         }
         catch (SQLException ex) {
-            System.out.println("ERROR: " + ex);
+            //System.out.println("ERROR: " + ex);
+            JOptionPane.showOptionDialog(null, "Error: " + ex, "Error", JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE, null, null, null);
+        }
+        return found;
+    }
+    
+    public static boolean CheckRow2(String qry){
+        DbConnection.conn();
+        Connection conn = DbConnection.conn;
+        
+        boolean found = false;
+        System.out.println(qry);
+        try{
+            Statement st = conn.createStatement();
+            String query = qry;
+            ResultSet rs = st.executeQuery(query);
+            int count = 0;
+            
+            if(rs.next()){
+                count = rs.getInt(1);
+                System.out.println(count);
+            }
+            
+            if(count > 0){
+                found = true;
+            }
+            else {
+                found = false;
+            }
+            
+        }
+        catch (SQLException ex) {
+            ex.printStackTrace();
+            JOptionPane.showOptionDialog(null, "Error: " + ex, "Error", JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE, null, null, null);
         }
         return found;
     }
@@ -113,7 +146,7 @@ public class CrudOperations {
 
         }
         catch (SQLException ex) {
-            System.out.println("ERROR: " + ex);
+            JOptionPane.showOptionDialog(null, "Error: " + ex, "Error", JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE, null, null, null);
         }
     }
 
@@ -129,14 +162,13 @@ public class CrudOperations {
             cmb.removeAllItems();
             
             while(rs.next()){
-                System.out.println(rs.getString(1));
                 cmb.addItem(rs.getString(1));
             }
             
             conn.close();
         }
         catch (SQLException ex) {
-            System.out.println("ERROR: " + ex);
+            JOptionPane.showOptionDialog(null, "Error: " + ex, "Error", JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE, null, null, null);
         } 
     }
     
@@ -151,7 +183,7 @@ public class CrudOperations {
             rs = st.executeQuery(query);
         }
         catch (SQLException ex) {
-            System.out.println("ERROR: " + ex);  
+            JOptionPane.showOptionDialog(null, "Error: " + ex, "Error", JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE, null, null, null);
         }
         
         return rs;
@@ -166,7 +198,7 @@ public class CrudOperations {
             } 
         }
         catch (SQLException ex) {
-            System.out.println("ERROR: " + ex);  
+            JOptionPane.showOptionDialog(null, "Error: " + ex, "Error", JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE, null, null, null);  
         }
         
     }
@@ -180,7 +212,7 @@ public class CrudOperations {
             } 
         }
         catch (SQLException ex) {
-            System.out.println("ERROR: " + ex);  
+            JOptionPane.showOptionDialog(null, "Error: " + ex, "Error", JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE, null, null, null); 
         }
         
     }
@@ -194,7 +226,7 @@ public class CrudOperations {
             } 
         }
         catch (SQLException ex) {
-            System.out.println("ERROR: " + ex);  
+            JOptionPane.showOptionDialog(null, "Error: " + ex, "Error", JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE, null, null, null); 
         }
         
     }
@@ -207,7 +239,7 @@ public class CrudOperations {
             } 
         }
         catch (SQLException ex) {
-            System.out.println("ERROR: " + ex);  
+            JOptionPane.showOptionDialog(null, "Error: " + ex, "Error", JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE, null, null, null); 
         }
     }
             
@@ -228,7 +260,7 @@ public class CrudOperations {
             
         }
         catch (SQLException ex) {
-            System.out.println("ERROR: " + ex);
+            JOptionPane.showOptionDialog(null, "Error: " + ex, "Error", JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE, null, null, null);
         }
         
     }
@@ -243,7 +275,7 @@ public class CrudOperations {
             st.execute(query);
         }
         catch (SQLException ex) {
-            System.out.println("ERROR: " + ex);
+            JOptionPane.showOptionDialog(null, "Error: " + ex, "Error", JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE, null, null, null);
         }
     }
     

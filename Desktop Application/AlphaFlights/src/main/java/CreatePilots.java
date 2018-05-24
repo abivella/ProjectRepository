@@ -285,10 +285,16 @@ public class CreatePilots extends javax.swing.JFrame {
         CrudOperations.Validation(txtContactNumber2, "NoStringEmptyY");
         boolean ContNo2Contains = CrudOperations.Validation(txtContactNumber2, "NoStringEmptyY");
         
-        if(NameContains == false && SurnameContains == false && ContNo1Contains == false && ContNo2Contains == false){
-            CreatePilot();
+        boolean found = CrudOperations.CheckRow2("SELECT COUNT(*) FROM pilot_tbl WHERE IDCardNumber='" + txtIdNumber.getText() + "'");
+        
+        if(found == true){
+            JOptionPane.showMessageDialog(null, "Pilot Already Exist!", "Error", JOptionPane.ERROR_MESSAGE);
         }
-
+        else if(found == false){
+            if(NameContains == false && SurnameContains == false && ContNo1Contains == false && ContNo2Contains == false){
+                CreatePilot();
+            }
+        }
     }//GEN-LAST:event_btnSaveActionPerformed
 
     private void cmbDaysActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbDaysActionPerformed

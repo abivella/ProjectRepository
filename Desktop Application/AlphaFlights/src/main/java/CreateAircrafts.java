@@ -90,7 +90,7 @@ public class CreateAircrafts extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(txtNoOfAvSeats, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 118, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 121, Short.MAX_VALUE)
                 .addComponent(jButton1)
                 .addContainerGap())
         );
@@ -104,21 +104,23 @@ public class CreateAircrafts extends javax.swing.JFrame {
         CrudOperations.Validation(txtAircraftCode, "DigitStringY");
         boolean Ccontains = CrudOperations.Validation(txtAircraftCode, "DigitStringY");
         
-        CrudOperations.Validation(txtAircraftName, "NoDigit");
-        boolean Ncontains = CrudOperations.Validation(txtAircraftName, "NoDigit");
-        
         CrudOperations.Validation(txtNoOfAvSeats, "NoString");
         boolean Scontains = CrudOperations.Validation(txtNoOfAvSeats, "NoString");
         
-        if(Ccontains == false && Ncontains == false && Scontains == false){
-            CrudOperations.CreateRecord("INSERT INTO Aircraft_tbl(AircraftId, AircraftCode, AircraftName, NoOfAvSeats) VALUES(NULL, " +
-                "'" + txtAircraftCode.getText() + "', " +
-                        "'" + txtAircraftName.getText() + "', " + "'" + txtNoOfAvSeats.getText() + "')");
+        boolean found = CrudOperations.CheckRow2("SELECT COUNT(*) FROM aircraft_tbl WHERE AircraftCode='" + txtAircraftCode.getText() + "'");
         
-            JOptionPane.showMessageDialog(null, "Aircraft Created Successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
-            this.dispose();
-            new Home().setVisible(true);
+        if(found == true){
+            JOptionPane.showMessageDialog(null, "Aircraft Code Already Exist!", "Error", JOptionPane.ERROR_MESSAGE);
         }
+        else if(found == false){
+            if(Ccontains == false && Scontains == false){
+                CrudOperations.CreateRecord("INSERT INTO Aircraft_tbl(AircraftId, AircraftCode, AircraftName, NoOfAvSeats) VALUES(NULL, " +
+                    "'" + txtAircraftCode.getText() + "', " +
+                            "'" + txtAircraftName.getText() + "', " + "'" + txtNoOfAvSeats.getText() + "')");
+
+                JOptionPane.showMessageDialog(null, "Aircraft Created Successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
+            }
+        }      
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**

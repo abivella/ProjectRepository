@@ -34,9 +34,7 @@
         $email = $_POST['email'];
         $password = $_POST['password'];
 
-        $_SESSION['email'] = $email;
-        $_SESSION['password'] = $password;
-        $_SESSION['time'] = time();
+        
 
         
         $selQuery = "SELECT* FROM account_tbl WHERE Email = '$email'";
@@ -51,6 +49,10 @@
             <?php
         }
         else{
+            $_SESSION['email'] = $email;
+            $_SESSION['password'] = $password;
+            $_SESSION['time'] = time();
+
             $query = "INSERT INTO account_tbl(AccountId, Email, Pass) VALUES (null, '$email', sha1('$password'))";
             $result = mysqli_query(connectToMySQL(), $query) or die("Error in query: ". mysqli_error(connectToMySQL()));
             
@@ -59,7 +61,6 @@
             <?php
         }
     } 
-    
 ?>
 
 <?php require_once('footer.php'); ?>
